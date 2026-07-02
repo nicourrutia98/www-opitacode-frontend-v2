@@ -1015,7 +1015,13 @@
     margin: 0 auto;
     padding: 0 clamp(16px, 4vw, 48px);
   }
-  .footer__lockup { width: 120px; height: auto; }
+  .footer__lockup {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: auto;
+    height: auto;
+  }
   .footer__tagline {
     font-size: 0.95rem;
     color: var(--color-line);
