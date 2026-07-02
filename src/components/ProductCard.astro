@@ -1,13 +1,14 @@
 ---
 /**
- * ProductCard — mini-ad per-product, con:
- *  - Hero (16:9) con logo real o wordmark + pattern distintivo
- *  - Trust signal específico por producto (psychologist: lo que más mueve al target)
- *  - Per-product layout variant (monument, aggregator, editor, terminal, etc.)
- *  - CTA contextual (LIVE → solid green, waitlist → outlined, flagship → big)
- *  - 6 patterns únicos (grid, lines, dots, people, code, blocks, waves)
+ * ProductCard — v6 (round 6)
+ * Rediseño limpio inspirado en el legacy:
+ * - Carátula SUTIL: solo status badge + corner icon, sin logo gigante, sin iniciales
+ * - Sin patrón de fondo (lo era noise visual)
+ * - Sin "by Opita Code" (duplicaba el nombre de la card)
+ * - Trust signal en monospace, sin bullets
+ * - CTA claro con jerarquía visual
  *
- * All styles are in global.css (single source of truth).
+ * Styles base en global.css (single source of truth).
  */
 import { t, type Lang } from '../i18n';
 import type { Product } from '../data/types';
@@ -31,20 +32,17 @@ const description = lang === 'es' ? product.description_es : product.description
 
 const colorClass = `caratula--${product.color}`;
 const caratulaDef = (caratulas as any)[product.id] || {};
-const initials = caratulaDef.initials || product.name.slice(0, 2).toUpperCase();
-const hasOwnLogo = !!caratulaDef.logoLight;
-const pattern = caratulaDef.pattern || 'dots';
 const layout = caratulaDef.layout || 'default';
 const trustSignal = lang === 'es' ? caratulaDef.trust_es : caratulaDef.trust_en;
-const signature = caratulaDef.signature || null;
 
-// LIVE badge: badge verde distintivo para productos en vivo
+// LIVE badge: badge discreto
 const liveBadge = lang === 'es' ? 'EN VIVO' : 'LIVE';
 const waitingBadge = lang === 'es' ? 'EN DESARROLLO' : 'IN DEVELOPMENT';
 const showStatusBadge = status === 'live' ? liveBadge : waitingBadge;
+const isLive = status === 'live';
 
-// CTA variant per layout
-const ctaVariant = layout === 'flagship' ? 'primary' : layout === 'waitlist' ? 'outline' : 'default';
+// CTA variant per layout (waitlist outlined, others default)
+const ctaVariant = layout === 'waitlist' ? 'outline' : 'default';
 const iconPath = ICON_PATHS[product.icon] || ICON_PATHS.layers;
 ---
 
@@ -54,116 +52,15 @@ const iconPath = ICON_PATHS[product.icon] || ICON_PATHS.layers;
   data-product-status={status}
   data-layout={layout}
 >
-  <!-- Carátula: hero con logo real o wordmark + pattern distintivo -->
-  <div class={`caratula ${colorClass} caratula--${pattern}`} aria-hidden="true">
-    {hasOwnLogo ? (
-      <img
-        class="caratula__logo"
-        src={caratulaDef.logoLight}
-        alt=""
-        loading="lazy"
-        decoding="async"
-        style={`filter: ${caratulaDef.logoFilter || 'none'}`}
-      />
-    ) : (
-      <>
-        <svg class="caratula__pattern" viewBox="0 0 100 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          {pattern === 'grid' && (
-            <g fill="currentColor" opacity="0.4">
-              {Array.from({ length: 20 }).map((_, i) => (
-                <circle key={`g-${i}`} cx={5 + (i % 10) * 10} cy={5 + Math.floor(i / 10) * 10} r="0.8" />
-              ))}
-            </g>
-          )}
-          {pattern === 'lines' && (
-            <g stroke="currentColor" stroke-width="0.3" opacity="0.5">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <line key={`l-${i}`} x1="0" y1={10 + i * 10} x2="100" y2={10 + i * 10} />
-              ))}
-            </g>
-          )}
-          {pattern === 'dots' && (
-            <g fill="currentColor" opacity="0.4">
-              {Array.from({ length: 50 }).map((_, i) => {
-                const x = (i * 13) % 100;
-                const y = (i * 7) % 60;
-                return <circle key={`d-${i}`} cx={x} cy={y} r="0.6" />;
-              })}
-            </g>
-          )}
-          {pattern === 'people' && (
-            <g fill="currentColor" opacity="0.4">
-              {Array.from({ length: 12 }).map((_, i) => {
-                const x = 8 + (i % 4) * 28;
-                const y = 8 + Math.floor(i / 4) * 22;
-                return (
-                  <g key={`p-${i}`} transform={`translate(${x} ${y})`}>
-                    <circle cx="0" cy="0" r="1.5" />
-                    <path d="M -3 4 Q 0 1.5 3 4 L 3 7 L -3 7 Z" />
-                  </g>
-                );
-              })}
-            </g>
-          )}
-          {pattern === 'code' && (
-            <g fill="currentColor" opacity="0.35" font-family="monospace" font-size="4">
-              <text x="2" y="8">{`{ }`}</text>
-              <text x="14" y="14">{`</>`}</text>
-              <text x="26" y="8">{`( )`}</text>
-              <text x="38" y="14">{`[ ]`}</text>
-              <text x="50" y="8">{`=>`}</text>
-              <text x="62" y="14">{`fn`}</text>
-              <text x="74" y="8">{`()`}</text>
-              <text x="86" y="14">{`if`}</text>
-              <text x="2" y="22">{`=>`}</text>
-              <text x="14" y="28">{`for`}</text>
-              <text x="26" y="22">{`let`}</text>
-              <text x="38" y="28">{`var`}</text>
-              <text x="50" y="22">{`end`}</text>
-              <text x="62" y="28">{`use`}</text>
-              <text x="74" y="22">{`def`}</text>
-              <text x="86" y="28">{`/>`}</text>
-            </g>
-          )}
-          {pattern === 'blocks' && (
-            <g fill="currentColor" opacity="0.35">
-              {Array.from({ length: 18 }).map((_, i) => {
-                const w = 6 + (i % 3) * 4;
-                const h = 4 + (i % 2) * 2;
-                const x = 4 + (i % 6) * 16;
-                const y = 4 + Math.floor(i / 6) * 16;
-                return <rect key={`b-${i}`} x={x} y={y} width={w} height={h} rx="1" />;
-              })}
-            </g>
-          )}
-          {pattern === 'waves' && (
-            <g stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.4">
-              {[0, 1, 2].map((row) => (
-                <path
-                  key={`w-${row}`}
-                  d={`M 0 ${15 + row * 18} Q 25 ${8 + row * 18} 50 ${15 + row * 18} T 100 ${15 + row * 18}`}
-                />
-              ))}
-            </g>
-          )}
-        </svg>
-
-        <div class="caratula__wordmark">
-          <span class="caratula__initials">{initials}</span>
-          {signature && (
-            <span class="caratula__signature">{signature}</span>
-          )}
-        </div>
-      </>
-    )}
-
-    <!-- Status badge flotante en la carátula (LIVE verde o EN DESARROLLO ámbar) -->
-    <span class={`caratula__status caratula__status--${status === 'live' ? 'live' : 'wip'}`} aria-label={showStatusBadge}>
+  <!-- Carátula sutil: solo color de fondo + status badge + corner icon -->
+  <div class={`caratula ${colorClass} caratula--clean`} aria-hidden="true">
+    <!-- Status badge discreto (top-left) -->
+    <span class={`caratula__status caratula__status--${isLive ? 'live' : 'wip'}`} aria-label={showStatusBadge}>
       <span class="caratula__status-dot"></span>
       {showStatusBadge}
     </span>
 
-    <!-- Icon corner mark -->
+    <!-- Icon corner mark (top-right) -->
     <div class="caratula__corner">
       <svg class="caratula__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" set:html={iconPath} />
     </div>
@@ -173,10 +70,9 @@ const iconPath = ICON_PATHS[product.icon] || ICON_PATHS.layers;
     <h3 class="product-card__title">{product.name}</h3>
     <p class="product-card__tagline">{tagline}</p>
 
-    <!-- Trust signal: el número que mueve al target user -->
+    <!-- Trust signal: monospace, sin bullet -->
     {trustSignal && (
       <div class="product-card__trust">
-        <span class="product-card__trust-bullet">●</span>
         <span class="product-card__trust-text">{trustSignal}</span>
       </div>
     )}

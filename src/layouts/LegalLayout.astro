@@ -84,21 +84,24 @@ const baseUrl = 'https://www.opitacode.com';
       <div class="legal-header__inner">
         <a href={homeHref} class="nav__brand" aria-label="Opita Code — inicio">
           <img
-            class="nav__logo-img dark:hidden"
-            src="/opita-horizontal-light.svg"
-            alt="Opita Code"
-            width="99"
-            height="36"
+            class="nav__symbol dark:hidden"
+            src="/opita-symbol-light.svg"
+            alt=""
+            width="32"
+            height="32"
             loading="eager"
+            aria-hidden="true"
           />
           <img
-            class="nav__logo-img hidden dark:block"
-            src="/opita-horizontal-dark.svg"
-            alt="Opita Code"
-            width="99"
-            height="36"
+            class="nav__symbol hidden dark:block"
+            src="/opita-symbol-dark.svg"
+            alt=""
+            width="32"
+            height="32"
             loading="eager"
+            aria-hidden="true"
           />
+          <span class="nav__brand-name">Opita Code</span>
         </a>
         <a href={homeHref} class="legal-header__back">{backLabel}</a>
       </div>

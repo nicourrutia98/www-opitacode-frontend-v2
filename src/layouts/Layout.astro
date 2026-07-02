@@ -134,21 +134,24 @@ const ogImageUrl = new URL('/og-image.jpg', Astro.site).href;
       <div class="nav__inner">
         <a href={`/${lang}`} class="nav__brand" aria-label="Opita Code — inicio">
           <img
-            class="nav__logo-img dark:hidden"
-            src="/opita-horizontal-light.svg"
-            alt={t(lang, 'header.logo-alt')}
-            width="99"
-            height="36"
+            class="nav__symbol dark:hidden"
+            src="/opita-symbol-light.svg"
+            alt=""
+            width="32"
+            height="32"
             loading="eager"
+            aria-hidden="true"
           />
           <img
-            class="nav__logo-img hidden dark:block"
-            src="/opita-horizontal-dark.svg"
-            alt={t(lang, 'header.logo-alt')}
-            width="99"
-            height="36"
+            class="nav__symbol hidden dark:block"
+            src="/opita-symbol-dark.svg"
+            alt=""
+            width="32"
+            height="32"
             loading="eager"
+            aria-hidden="true"
           />
+          <span class="nav__brand-name">Opita Code</span>
         </a>
         <ul class="nav__links">
           <li><a href={`/${lang}#servicios`} class="nav__link">{t(lang, 'nav.services')}</a></li>
@@ -199,14 +202,18 @@ const ogImageUrl = new URL('/og-image.jpg', Astro.site).href;
     <!-- ── Footer (legacy structure) ── -->
     <footer class="footer" aria-label={t(lang, 'footer.label')}>
       <div class="footer__inner">
-        <img
-          class="footer__lockup"
-          src="/opita-stacked-light.svg"
-          alt={t(lang, 'header.logo-alt')}
-          width="120"
-          height="166"
-          loading="lazy"
-        />
+        <div class="footer__lockup">
+          <img
+            class="footer__symbol"
+            src="/opita-symbol-light.svg"
+            alt=""
+            width="64"
+            height="64"
+            loading="lazy"
+            aria-hidden="true"
+          />
+          <span class="footer__brand-name">Opita Code</span>
+        </div>
         <p class="footer__tagline">{t(lang, 'footer.tagline')}</p>
 
         <hr class="footer__divider" role="presentation" />

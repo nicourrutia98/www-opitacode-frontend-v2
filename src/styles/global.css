@@ -35,9 +35,12 @@
   --color-inverse-ink: #F6F6F2;
   --color-inverse-paper: #101010;
 
-  /* ── Warm earth accent (oklch) ── */
-  --color-accent: oklch(0.41 0.19 46);
-  --color-accent-hover: oklch(0.34 0.16 42);
+  /* ── Warm earth accent (sRGB primary, OKLCH enhancement) ── */
+  /* Round 6 fix: changed from oklch(0.41 0.19 46) which rendered as RED on sRGB
+     to #B25E2C (warm sienna) with OKLCH sibling for P3 displays. */
+  --color-accent: #B25E2C;
+  --color-accent-oklch: oklch(0.55 0.13 50);
+  --color-accent-hover: #8F4A21;
   --color-focus-ring: rgba(17, 17, 17, 0.20);
 
   /* ── Semantic (form feedback) ── */
@@ -1184,7 +1187,7 @@
     flex: 1;
   }
   .product-card__title {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     font-weight: 700;
     letter-spacing: -0.02em;
     line-height: 1.2;
@@ -1193,7 +1196,7 @@
   }
   .product-card__tagline {
     font-size: 0.88rem;
-    color: var(--color-accent);
+    color: var(--text-muted);
     font-weight: 500;
     line-height: 1.35;
   }
@@ -1202,19 +1205,18 @@
     color: var(--text-base);
     line-height: 1.55;
     flex: 1;
-    opacity: 0.85;
+    opacity: 0.8;
   }
   .product-card__trust {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
     padding: 4px 0;
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--color-accent);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-muted);
   }
-  .product-card__trust-bullet { font-size: 0.5rem; line-height: 1; }
-  .product-card__trust-text { font-family: var(--font-mono); letter-spacing: -0.01em; }
+  .product-card__trust-bullet { display: none; }
+  .product-card__trust-text { font-family: var(--font-mono); letter-spacing: 0.01em; color: var(--text-base); opacity: 0.7; }
 
   .product-card__cta {
     display: flex;
@@ -1290,10 +1292,10 @@
   .product-card--waitlist .caratula { opacity: 0.85; }
   .product-card--studio .caratula__icon { width: 36px; height: 36px; }
 
-  /* Carátula base */
+  /* Carátula base (round 6 — más sutil, no domina) */
   .caratula {
     position: relative;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 16 / 7;
     border-radius: 16px 16px 0 0;
     overflow: hidden;
     display: flex;
@@ -1310,21 +1312,20 @@
     background:
       radial-gradient(circle at 20% 20%, var(--caratula-glow, transparent) 0%, transparent 50%),
       radial-gradient(circle at 80% 80%, var(--caratula-glow-2, transparent) 0%, transparent 50%);
-    opacity: 0.55;
+    opacity: 0.3;
     pointer-events: none;
   }
-  .caratula__pattern {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    color: var(--caratula-icon, var(--text-base));
+  /* Round 6: clean carátula = no logo, no initials, just colored surface + badges */
+  .caratula--clean .caratula__pattern,
+  .caratula--clean .caratula__logo,
+  .caratula--clean .caratula__wordmark {
+    display: none;
   }
   .caratula__logo {
     position: relative;
     z-index: 2;
-    max-width: 60%;
-    max-height: 60%;
+    max-width: 32%;
+    max-height: 32%;
     object-fit: contain;
   }
   .caratula__wordmark {
@@ -1336,29 +1337,26 @@
     gap: 4px;
   }
   .caratula__initials {
-    font-size: clamp(2.5rem, 6vw, 3.5rem);
-    font-weight: 900;
-    letter-spacing: -0.04em;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
     line-height: 1;
     color: var(--caratula-icon, var(--text-base));
     font-family: var(--font-heading);
+    opacity: 0.55;
   }
   .caratula__signature {
-    font-size: 0.65rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    opacity: 0.6;
+    display: none; /* Round 6: hide signature — it duplicated the brand name */
   }
   .caratula__corner {
     position: absolute;
-    top: 12px;
-    right: 12px;
+    top: 10px;
+    right: 10px;
     z-index: 3;
-    width: 28px;
-    height: 28px;
-    padding: 5px;
-    border-radius: 6px;
+    width: 32px;
+    height: 32px;
+    padding: 6px;
+    border-radius: 8px;
     background: rgba(255, 255, 255, 0.85);
     color: var(--text-base);
     backdrop-filter: blur(2px);
@@ -1368,14 +1366,14 @@
 
   .caratula__status {
     position: absolute;
-    top: 12px;
-    left: 12px;
+    top: 10px;
+    left: 10px;
     z-index: 4;
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    padding: 4px 10px;
-    font-size: 0.65rem;
+    gap: 4px;
+    padding: 3px 8px;
+    font-size: 0.6rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -1383,8 +1381,8 @@
     backdrop-filter: blur(4px);
   }
   .caratula__status-dot {
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
     flex-shrink: 0;
   }
@@ -1398,7 +1396,7 @@
     animation: pulse-live 2s infinite;
   }
   .caratula__status--wip {
-    background: rgba(217, 119, 6, 0.92);
+    background: rgba(178, 94, 44, 0.92);
     color: white;
   }
   .caratula__status--wip .caratula__status-dot { background: white; }
