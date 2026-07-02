@@ -13,8 +13,9 @@ Continuous integration and deployment for the Opita Code corporate landing (www.
 | Secret | Source | Scope |
 |---|---|---|
 | `CLOUDFLARE_API_TOKEN` | Cloudflare dashboard → My Profile → API Tokens → Create Custom Token with **Cloudflare Pages: Edit** on `opita-code` project | Deploy only |
+| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare dashboard → Workers & Pages → `opita-code` → right column → "Account ID" | Account identifier (wrangler requires it for `pages deploy`) |
 
-`CLOUDFLARE_ACCOUNT_ID` is **not required** — wrangler resolves the account from the project name. (If you want to make it explicit anyway, add it from Cloudflare dashboard → Workers & Pages → `opita-code` → right column.)
+To find the account ID locally: `%USERPROFILE%\.wrangler\cache\wrangler-account.json` → `account.id`.
 
 ## Connection: GitHub → Cloudflare Pages
 
