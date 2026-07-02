@@ -40,6 +40,11 @@
   --color-corporate-700: var(--corporate-700);
   --color-corporate-100: var(--corporate-100);
   --color-corporate-50: var(--corporate-50);
+  /* Mid-scale (filled in @layer base per mode — light mixes 100+700, dark mixes differently) */
+  --color-corporate-300: color-mix(in oklch, var(--corporate-100) 60%, var(--corporate-700) 40%);
+  --color-corporate-400: color-mix(in oklch, var(--corporate-100) 35%, var(--corporate-700) 65%);
+  --color-corporate-500: color-mix(in oklch, var(--corporate-100) 15%, var(--corporate-700) 85%);
+  --color-corporate-600: color-mix(in oklch, var(--corporate-100) 5%, var(--corporate-700) 95%);
 
   /* ── Semantic ── */
   --color-error: #dc2626;
@@ -94,6 +99,11 @@
       --corporate-700: var(--color-line);
       --corporate-100: rgba(255, 255, 255, 0.08);
       --corporate-50: #1F1F1F;
+      /* Mid-scale (dark mode) — explicit values for /projects/ pages */
+      --color-corporate-300: #5A5048;
+      --color-corporate-400: #7A6E62;
+      --color-corporate-500: #A89888;
+      --color-corporate-600: #C9B8A2;
       /* Semantic (dark mode) — AA contrast on #1A1A1A */
       --color-error-surface: #2A1515;
       --color-error-border: #5C2020;
@@ -116,6 +126,11 @@
     --corporate-700: var(--color-line);
     --corporate-100: rgba(255, 255, 255, 0.08);
     --corporate-50: #1F1F1F;
+    /* Mid-scale (dark mode) — explicit values for /projects/ pages */
+    --color-corporate-300: #5A5048;
+    --color-corporate-400: #7A6E62;
+    --color-corporate-500: #A89888;
+    --color-corporate-600: #C9B8A2;
     /* Semantic (dark mode) — still AA contrast on #1A1A1A surface */
     --color-error-surface: #2A1515;
     --color-error-border: #5C2020;

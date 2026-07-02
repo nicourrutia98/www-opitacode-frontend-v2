@@ -152,7 +152,7 @@ export function ContactForm({ lang }: ContactFormProps) {
           autoComplete="name"
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          className="w-full px-4 py-2 bg-bg-base text-text-base border border-border-base rounded-md focus:outline-none focus:border-corporate-900 disabled:opacity-50"
+          className="w-full px-4 py-2 bg-bg-base text-text-base border border-border-base rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-corporate-700 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-base focus:border-corporate-900 disabled:opacity-50"
           disabled={status === 'loading'}
         />
       </div>
@@ -168,7 +168,7 @@ export function ContactForm({ lang }: ContactFormProps) {
           autoComplete="email"
           value={formData.email}
           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-          className="w-full px-4 py-2 bg-bg-base text-text-base border border-border-base rounded-md focus:outline-none focus:border-corporate-900 disabled:opacity-50"
+          className="w-full px-4 py-2 bg-bg-base text-text-base border border-border-base rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-corporate-700 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-base focus:border-corporate-900 disabled:opacity-50"
           disabled={status === 'loading'}
         />
       </div>
@@ -185,7 +185,7 @@ export function ContactForm({ lang }: ContactFormProps) {
           autoComplete="off"
           value={formData.message}
           onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-          className="w-full px-4 py-2 bg-bg-base text-text-base border border-border-base rounded-md focus:outline-none focus:border-corporate-900 disabled:opacity-50"
+          className="w-full px-4 py-2 bg-bg-base text-text-base border border-border-base rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-corporate-700 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-base focus:border-corporate-900 disabled:opacity-50"
           disabled={status === 'loading'}
         />
       </div>
