@@ -13,34 +13,32 @@ Continuous integration and deployment for the Opita Code corporate landing (www.
 | Secret | Source | Scope |
 |---|---|---|
 | `CLOUDFLARE_API_TOKEN` | Cloudflare dashboard → My Profile → API Tokens → Create Custom Token with **Cloudflare Pages: Edit** on `opita-code` project | Deploy only |
-| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare dashboard → Workers & Pages → `opita-code` → right column | Identify account |
+
+`CLOUDFLARE_ACCOUNT_ID` is **not required** — wrangler resolves the account from the project name. (If you want to make it explicit anyway, add it from Cloudflare dashboard → Workers & Pages → `opita-code` → right column.)
 
 ## Connection: GitHub → Cloudflare Pages
 
-For the workflow to deploy automatically:
-1. Cloudflare dashboard → Workers & Pages → `opita-code` → Settings → Builds
-2. Disconnect the "no GitHub" state and connect this repo's `main` branch
-3. Or keep GitHub Actions as the only source of truth (current setup)
+The `cloudflare/wrangler-action@v3` step runs `wrangler pages deploy` from the GitHub Actions runner. **Do not** also connect the Cloudflare git integration — that would cause double-deploys. Pick one:
+- ✅ **GitHub Action (this workflow)**: full CI, typecheck, smoke test, PR previews via `workflow_dispatch`
+- ❌ Cloudflare's "Connect to Git" button: simpler but no typecheck, no smoke test, no PR previews
 
-The `pages-action` v1 deploys from the GitHub Actions runner; the Cloudflare git integration is a no-op fallback.
+We use GitHub Action for the CI feedback loop.
 
 ## Branch → environment mapping
 
 | Branch | Cloudflare | URL |
 |---|---|---|
 | `main` | Production | https://www.opitacode.com |
-| `*` (any other) | Preview | https://`<branch>`.opita-code.pages.dev |
+| `*` (PR or other branch) | Preview | https://`<branch>`.opita-code.pages.dev |
 
 ## Local deploy (operator fallback)
 
 If GitHub is unavailable, deploy from local:
 
 ```bash
-# One-time: get a Cloudflare API token with Pages:Edit on opita-code
-export CLOUDFLARE_API_TOKEN=...
-export CLOUDFLARE_ACCOUNT_ID=...
-
-# Build + deploy
+# Use the secret-vault token (no manual paste)
+$CF_TOKEN = vault.ps1 get cloudflare_api_token
+$env:CLOUDFLARE_API_TOKEN = $CF_TOKEN
 npm ci
 npm run build
 npx wrangler pages deploy dist --project-name=opita-code --branch=main --commit-dirty=true

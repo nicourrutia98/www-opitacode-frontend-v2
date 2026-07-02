@@ -11,7 +11,7 @@ env:
   NODE_VERSION: '22'
 
 jobs:
-  # ─── Build + Typecheck + Lint (architect: catch errors before deploy) ───
+  # ─── Build + Typecheck (architect: catch errors before deploy) ───
   build:
     name: Build + Typecheck
     runs-on: ubuntu-latest
@@ -69,18 +69,15 @@ jobs:
       - name: Build
         run: npm run build
 
+      # Deploy via wrangler (uses CLOUDFLARE_API_TOKEN; account_id optional when project name is given)
       - name: Publish to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: opita-code
-          directory: dist
+          # accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}  # Optional: wrangler resolves it from the project
+          workingDirectory: '.'
+          command: pages deploy dist --project-name=opita-code --branch=main --commit-dirty=true
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          # Production branch = main; preview branches = everything else
-          branch: main
-        env:
-          NODE_VERSION: ${{ env.NODE_VERSION }}
 
       - name: Smoke test deployed URL
         run: |
