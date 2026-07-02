@@ -1,8 +1,8 @@
 ---
 /**
  * LegalLayout — minimal layout for /legal/* pages.
- * Con header simple (logo + volver), main content slot, footer con datos de contacto.
- * Estilo formal con "usted" (per colombia-conventions).
+ * Style: formal, usted (per colombia-conventions).
+ * Brand: legacy logo set, legacy design system.
  */
 import '../styles/global.css';
 
@@ -20,7 +20,13 @@ const homeHref = lang === 'es' ? '/es' : '/en';
 const backLabel = lang === 'es' ? '← Volver al inicio' : '← Back to home';
 const lastUpdatedLabel = lang === 'es' ? 'Última actualización' : 'Last updated';
 
-// Linked legal sections in current language
+const sectionTitle: Record<string, { es: string; en: string }> = {
+  aviso: { es: 'Aviso de Privacidad', en: 'Privacy Notice' },
+  ptd: { es: 'Política de Tratamiento de Datos', en: 'Data Treatment Policy' },
+  terminos: { es: 'Términos y Condiciones', en: 'Terms and Conditions' },
+  reclamo: { es: 'Libro de Reclamaciones', en: 'Complaints Book' },
+};
+
 const sections = lang === 'es'
   ? [
       { id: 'aviso', href: '/es/legal/aviso', label: 'Aviso de Privacidad' },
@@ -34,6 +40,8 @@ const sections = lang === 'es'
       { id: 'terminos', href: '/en/legal/terminos', label: 'Terms and Conditions' },
       { id: 'reclamo', href: '/en/legal/reclamo', label: 'Complaints Book' },
     ];
+
+const baseUrl = 'https://www.opitacode.com';
 ---
 
 <!doctype html>
@@ -42,18 +50,55 @@ const sections = lang === 'es'
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#F7F7F4" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#101010" media="(prefers-color-scheme: dark)" />
+
     <title>{title}</title>
+    <link rel="canonical" href={`${baseUrl}${lang === 'es' ? '/es' : '/en'}/legal/${section}`} />
     <meta name="robots" content="index, follow" />
+
+    <!-- Favicon set -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon-180x180.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <meta name="generator" content={Astro.generator} />
     {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+
+    <script is:inline>
+      (function() {
+        var t = localStorage.getItem('theme');
+        if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.add('light');
+        }
+      })();
+    </script>
   </head>
   <body class="legal-page">
     <header class="legal-header">
       <div class="legal-header__inner">
-        <a href={homeHref} class="legal-header__brand" aria-label="Opita Code — inicio">
-          <img src="/opita-code-horizontal-black-v4.png" alt="Opita Code" class="legal-header__logo dark:hidden" width="121" height="28" />
-          <img src="/opita-code-horizontal-white-v4.png" alt="Opita Code" class="legal-header__logo hidden dark:block" width="121" height="28" />
+        <a href={homeHref} class="nav__brand" aria-label="Opita Code — inicio">
+          <img
+            class="nav__logo-img dark:hidden"
+            src="/opita-horizontal-light.svg"
+            alt="Opita Code"
+            width="99"
+            height="36"
+            loading="eager"
+          />
+          <img
+            class="nav__logo-img hidden dark:block"
+            src="/opita-horizontal-dark.svg"
+            alt="Opita Code"
+            width="99"
+            height="36"
+            loading="eager"
+          />
         </a>
         <a href={homeHref} class="legal-header__back">{backLabel}</a>
       </div>
@@ -61,7 +106,7 @@ const sections = lang === 'es'
 
     <main class="legal-main">
       <div class="legal-layout">
-        <aside class="legal-aside" aria-label="Secciones legales">
+        <aside class="legal-aside" aria-label={lang === 'es' ? 'Secciones legales' : 'Legal sections'}>
           <p class="legal-aside__eyebrow">{lang === 'es' ? 'Legal' : 'Legal'}</p>
           <ul class="legal-aside__list">
             {sections.map((s) => (
@@ -114,23 +159,29 @@ const sections = lang === 'es'
   }
   .legal-header {
     border-bottom: 1px solid var(--border-base);
-    padding: 16px clamp(16px, 4vw, 48px);
+    padding: 0 clamp(16px, 4vw, 48px);
     background: var(--bg-base);
+    position: sticky;
+    top: 0;
+    z-index: 100;
   }
   .legal-header__inner {
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 12px;
+    height: 64px;
   }
-  .legal-header__logo { height: 28px; width: auto; }
   .legal-header__back {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: var(--text-muted);
     text-decoration: none;
-    margin-left: auto;
     transition: color var(--motion-quick) var(--ease-standard);
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
   }
   .legal-header__back:hover { color: var(--text-base); }
 
@@ -144,7 +195,7 @@ const sections = lang === 'es'
   .legal-layout {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 48px;
+    gap: clamp(24px, 4vw, 48px);
   }
   @media (min-width: 900px) {
     .legal-layout { grid-template-columns: 220px 1fr; gap: 64px; }
@@ -180,6 +231,7 @@ const sections = lang === 'es'
     letter-spacing: -0.02em;
     line-height: 1.15;
     margin-bottom: 12px;
+    font-family: var(--font-heading);
   }
   .legal-updated {
     font-size: 0.82rem;

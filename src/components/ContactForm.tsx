@@ -62,11 +62,11 @@ export function ContactForm({ lang }: ContactFormProps) {
         setStatus('success');
         setFormData({ name: '', email: '', message: '', website: '' });
 
-        // Telemetry: track successful contact submission
+        // Telemetry
         try {
           const telemetryApi = 'https://api.opitacode.com/core/events/ingest';
           let sid = sessionStorage.getItem('opita_session_id');
-          if (!sid) { sid = crypto.randomUUID(); sessionStorage.setItem('opita_session_id', sid); }
+          if (!sid) { sid = (crypto && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now()); sessionStorage.setItem('opita_session_id', sid); }
           fetch(telemetryApi, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -87,7 +87,7 @@ export function ContactForm({ lang }: ContactFormProps) {
             }),
             keepalive: true,
           }).catch(() => {});
-        } catch { /* telemetry is best-effort */ }
+        } catch { /* best-effort */ }
       } else {
         const data = await response.json().catch(() => ({}));
         setErrorMessage(data.error || labels.errorDefault);
@@ -101,16 +101,12 @@ export function ContactForm({ lang }: ContactFormProps) {
 
   if (status === 'success') {
     return (
-      <div className="bg-success-surface border border-success-border text-success-text rounded-md p-6 text-center">
-        <svg className="w-8 h-8 mx-auto mb-3 text-success-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <div className="contact-form__success" role="status">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
         </svg>
-        <p className="font-medium">{labels.success}</p>
-        <button
-          type="button"
-          onClick={() => setStatus('idle')}
-          className="mt-4 text-sm font-medium text-success-text hover:underline"
-        >
+        <p>{labels.success}</p>
+        <button type="button" onClick={() => setStatus('idle')}>
           {labels.sendAnother}
         </button>
       </div>
@@ -118,9 +114,9 @@ export function ContactForm({ lang }: ContactFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4 text-left max-w-md mx-auto" noValidate>
+    <form onSubmit={handleSubmit} className="contact-form__form" noValidate>
       {status === 'error' && (
-        <div role="alert" className="bg-error-surface border border-error-border text-error-text rounded-md p-4 text-sm">
+        <div role="alert" className="contact-form__msg contact-form__msg--error">
           {errorMessage}
         </div>
       )}
@@ -140,70 +136,69 @@ export function ContactForm({ lang }: ContactFormProps) {
       </div>
 
       <div>
-        <label htmlFor="name" className="block text-sm font-medium mb-1">
-          {labels.name}
-        </label>
+        <label htmlFor="name" className="sr-only">{labels.name}</label>
         <input
           type="text"
           id="name"
           name="name"
+          placeholder={labels.name}
           required
           minLength={2}
           autoComplete="name"
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          className="w-full px-4 py-2 bg-bg-base text-text-base border border-border-base rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-corporate-700 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-base focus:border-corporate-900 disabled:opacity-50"
+          className="contact-form__input"
           disabled={status === 'loading'}
         />
       </div>
       <div>
-        <label htmlFor="email" className="block text-sm font-medium mb-1">
-          {labels.email}
-        </label>
+        <label htmlFor="email" className="sr-only">{labels.email}</label>
         <input
           type="email"
           id="email"
           name="email"
+          placeholder={labels.email}
           required
           autoComplete="email"
           value={formData.email}
           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-          className="w-full px-4 py-2 bg-bg-base text-text-base border border-border-base rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-corporate-700 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-base focus:border-corporate-900 disabled:opacity-50"
+          className="contact-form__input"
           disabled={status === 'loading'}
         />
       </div>
       <div>
-        <label htmlFor="message" className="block text-sm font-medium mb-1">
-          {labels.message}
-        </label>
+        <label htmlFor="message" className="sr-only">{labels.message}</label>
         <textarea
           id="message"
           name="message"
+          placeholder={labels.message}
           rows={4}
           required
           minLength={10}
           autoComplete="off"
           value={formData.message}
           onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-          className="w-full px-4 py-2 bg-bg-base text-text-base border border-border-base rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-corporate-700 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-base focus:border-corporate-900 disabled:opacity-50"
+          className="contact-form__input contact-form__textarea"
           disabled={status === 'loading'}
         />
       </div>
       <button
         type="submit"
+        className="contact-form__btn"
         disabled={status === 'loading'}
-        className="bg-corporate-900 text-bg-base px-6 py-3 rounded-md font-medium hover:bg-corporate-800 transition-colors mt-2 disabled:opacity-70 flex justify-center items-center gap-2"
+        data-cta-contact
+        data-cta-section="contact-form"
       >
         {status === 'loading' ? (
           <>
-            <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-bg-base" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            <svg className="animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true" style={{ width: '20px', height: '20px' }}>
+              <circle style={{ opacity: 0.25 }} cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path style={{ opacity: 0.75 }} fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
-            {labels.loading}
+            <span>{labels.loading}</span>
           </>
         ) : (
-          labels.submit
+          <span>{labels.submit}</span>
         )}
       </button>
     </form>

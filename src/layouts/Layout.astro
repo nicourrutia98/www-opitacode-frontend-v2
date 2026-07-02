@@ -1,7 +1,6 @@
 ---
 import '../styles/global.css';
 import ThemeToggle from '../components/ThemeToggle.astro';
-import ConversionChannels from '../components/ConversionChannels.astro';
 import { t, type Lang } from '../i18n';
 
 interface Props {
@@ -35,7 +34,7 @@ const defaultSchema = {
       '@id': `${baseUrl}/#organization`,
       name: t(lang, 'meta.organization-name'),
       url: baseUrl,
-      logo: `${baseUrl}/logo-dark.svg`,
+      logo: `${baseUrl}/opita-horizontal-light.svg`,
       description: t(lang, 'meta.organization-tagline'),
       foundingDate: '2022-01-01',
       address: { '@type': 'PostalAddress', addressCountry: 'CO' },
@@ -74,7 +73,21 @@ const ogImageUrl = new URL('/og-image.jpg', Astro.site).href;
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#F7F7F4" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#101010" media="(prefers-color-scheme: dark)" />
+
+    <!-- Favicon set (legacy — 7 sizes + multi-res ICO) -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64x64.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512x512.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon-180x180.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="msapplication-TileColor" content="#F7F7F4" />
+
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <link rel="canonical" href={canonicalUrl} />
@@ -103,37 +116,60 @@ const ogImageUrl = new URL('/og-image.jpg', Astro.site).href;
     <!-- JSON-LD -->
     <script type="application/ld+json" set:html={JSON.stringify(finalSchema)} />
 
-    <!-- Theme Manager -->
+    <!-- Theme Manager (inline so dark/light applies before paint) -->
     <script is:inline>
-      if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.add('light');
-      }
+      (function() {
+        var t = localStorage.getItem('theme');
+        if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.add('light');
+        }
+      })();
     </script>
   </head>
-  <body class="min-h-screen flex flex-col font-sans">
-    <header class="border-b border-border-base bg-bg-base/80 backdrop-blur-md sticky top-0 z-50">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+  <body>
+    <!-- ── Navigation (legacy structure) ── -->
+    <nav class="nav" aria-label={t(lang, 'header.main-nav')}>
+      <div class="nav__inner">
+        <a href={`/${lang}`} class="nav__brand" aria-label="Opita Code — inicio">
+          <img
+            class="nav__logo-img dark:hidden"
+            src="/opita-horizontal-light.svg"
+            alt={t(lang, 'header.logo-alt')}
+            width="99"
+            height="36"
+            loading="eager"
+          />
+          <img
+            class="nav__logo-img hidden dark:block"
+            src="/opita-horizontal-dark.svg"
+            alt={t(lang, 'header.logo-alt')}
+            width="99"
+            height="36"
+            loading="eager"
+          />
+        </a>
+        <ul class="nav__links">
+          <li><a href={`/${lang}#servicios`} class="nav__link">{t(lang, 'nav.services')}</a></li>
+          <li><a href={`/${lang}#ecosystem`} class="nav__link">{t(lang, 'nav.ecosystem')}</a></li>
+          <li><a href={`/${lang}#fundador`} class="nav__link">{t(lang, 'nav.about')}</a></li>
+          <li><a href={`/${lang}#contact`} class="nav__link">{t(lang, 'nav.contact')}</a></li>
+        </ul>
         <div class="flex items-center gap-3">
-          <img src="/opita-code-horizontal-black-v4.png" alt={t(lang, 'header.logo-alt')} class="h-8 w-auto object-contain shrink-0 dark:hidden" />
-          <img src="/opita-code-horizontal-white-v4.png" alt={t(lang, 'header.logo-alt')} class="h-8 w-auto object-contain shrink-0 hidden dark:block" />
-        </div>
-        <nav class="hidden md:flex gap-8 text-sm font-medium items-center" aria-label={t(lang, 'header.main-nav')}>
-          <a href={`/${lang}#ecosystem`} class="text-text-muted hover:text-text-base transition-colors">{t(lang, 'nav.ecosystem')}</a>
-          <a href={`/${lang}#fundador`} class="text-text-muted hover:text-text-base transition-colors">{t(lang, 'nav.about')}</a>
-          <a href={`/${lang}#contact`} class="text-text-muted hover:text-text-base transition-colors">{t(lang, 'nav.contact')}</a>
-          <div class="h-4 w-px bg-border-base"></div>
-          <a href="https://cuenta.opitacode.com" class="text-corporate-700 dark:text-corporate-800 hover:text-corporate-900 dark:hover:text-corporate-100 font-bold transition-colors">{t(lang, 'nav.my-account')}</a>
-        </nav>
-        <div class="flex items-center gap-4">
+          <div class="nav__lang" aria-label={t(lang, 'header.lang-switcher')}>
+            <a href="/es" class={lang === 'es' ? 'is-active' : ''}>ES</a>
+            <span class="nav__lang-sep" aria-hidden="true">/</span>
+            <a href="/en" class={lang === 'en' ? 'is-active' : ''}>EN</a>
+          </div>
+          <ThemeToggle />
           <button
             type="button"
-            id="mobile-nav-toggle"
-            class="md:hidden p-2 -mr-2 text-text-base rounded-md hover:bg-bg-muted transition-colors"
+            id="nav__mobile-toggle"
+            class="nav__mobile-toggle"
             aria-label={t(lang, 'header.open-menu')}
             aria-expanded="false"
-            aria-controls="mobile-nav"
+            aria-controls="nav__mobile"
           >
             <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <line x1="3" y1="6" x2="21" y2="6" />
@@ -141,107 +177,150 @@ const ogImageUrl = new URL('/og-image.jpg', Astro.site).href;
               <line x1="3" y1="18" x2="21" y2="18" />
             </svg>
           </button>
-          <div class="text-xs font-mono bg-bg-muted px-2 py-1 rounded text-text-muted border border-border-base flex items-center h-full">
-            <a href="/es" class={lang === 'es' ? 'font-bold text-text-base' : ''}>ES</a>
-            <span class="opacity-50 mx-1">/</span>
-            <a href="/en" class={lang === 'en' ? 'font-bold text-text-base' : ''}>EN</a>
-          </div>
-          <ThemeToggle />
         </div>
       </div>
-    <!-- Mobile nav (hamburger) — psychologist: mobile users want a thumb-reach CTA, not 3 hidden links -->
-    <div id="mobile-nav" class="md:hidden hidden bg-bg-base border-b border-border-base">
-      <nav class="px-4 py-3 flex flex-col gap-1 text-sm font-medium" aria-label={t(lang, 'header.main-nav')}>
-        <a href={`/${lang}#ecosystem`} class="px-3 py-2 rounded-md text-text-muted hover:text-text-base hover:bg-bg-muted transition-colors">{t(lang, 'nav.ecosystem')}</a>
-        <a href={`/${lang}#fundador`} class="px-3 py-2 rounded-md text-text-muted hover:text-text-base hover:bg-bg-muted transition-colors">{t(lang, 'nav.about')}</a>
-        <a href={`/${lang}#contact`} class="px-3 py-2 rounded-md text-text-muted hover:text-text-base hover:bg-bg-muted transition-colors">{t(lang, 'nav.contact')}</a>
-        <div class="h-px bg-border-base my-1"></div>
-        <a href="https://cuenta.opitacode.com" class="px-3 py-2 rounded-md text-corporate-700 dark:text-corporate-800 font-bold hover:bg-bg-muted transition-colors">{t(lang, 'nav.my-account')}</a>
-      </nav>
+    </nav>
+
+    <!-- Mobile nav (hidden by default, toggled by JS) -->
+    <div id="nav__mobile" class="nav__mobile" hidden>
+      <ul class="nav__mobile-list">
+        <li><a href={`/${lang}#servicios`} class="nav__mobile-link">{t(lang, 'nav.services')}</a></li>
+        <li><a href={`/${lang}#ecosystem`} class="nav__mobile-link">{t(lang, 'nav.ecosystem')}</a></li>
+        <li><a href={`/${lang}#fundador`} class="nav__mobile-link">{t(lang, 'nav.about')}</a></li>
+        <li><a href={`/${lang}#contact`} class="nav__mobile-link">{t(lang, 'nav.contact')}</a></li>
+        <li><a href="https://cuenta.opitacode.com" class="nav__mobile-link is-cta">{t(lang, 'nav.my-account')}</a></li>
+      </ul>
     </div>
 
-    <main class="flex-grow">
+    <main>
       <slot />
     </main>
 
-    <footer class="bg-bg-muted border-t border-border-base py-12 mt-24">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col gap-8">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-          <div class="flex items-center gap-3">
-            <img src="/opita-code-symbol-black-v4.png" alt={t(lang, 'header.logo-alt')} class="h-6 w-auto object-contain shrink-0 opacity-50 grayscale dark:hidden" />
-            <img src="/opita-code-symbol-white-v4.png" alt={t(lang, 'header.logo-alt')} class="h-6 w-auto object-contain shrink-0 opacity-50 grayscale hidden dark:block" />
-            <span class="text-sm text-text-muted font-medium">{t(lang, 'footer.copyright', { year })}</span>
-          </div>
-          <div class="text-sm text-corporate-700 text-center md:text-right">
-            {t(lang, 'footer.tagline')}
-          </div>
-        </div>
-        <div class="border-t border-border-base pt-6 flex flex-col items-center gap-4">
-          <p class="text-sm font-medium text-text-base">{t(lang, 'conversion-channels.title')}</p>
-          <ConversionChannels lang={lang} source_section="footer" variant="inline" />
-        </div>
+    <!-- ── Footer (legacy structure) ── -->
+    <footer class="footer" aria-label={t(lang, 'footer.label')}>
+      <div class="footer__inner">
+        <img
+          class="footer__lockup"
+          src="/opita-stacked-light.svg"
+          alt={t(lang, 'header.logo-alt')}
+          width="120"
+          height="166"
+          loading="lazy"
+        />
+        <p class="footer__tagline">{t(lang, 'footer.tagline')}</p>
+
+        <hr class="footer__divider" role="presentation" />
+
+        <ul class="footer__legal">
+          <li><a href="/es/legal/aviso" class="footer__legal-link">{t(lang, 'legal.aviso')}</a></li>
+          <li><a href="/es/legal/ptd" class="footer__legal-link">{t(lang, 'legal.ptd')}</a></li>
+          <li><a href="/es/legal/terminos" class="footer__legal-link">{t(lang, 'legal.terminos')}</a></li>
+          <li><a href="/es/legal/reclamo" class="footer__legal-link">{t(lang, 'legal.reclamo')}</a></li>
+        </ul>
+
+        <p class="footer__copyright">
+          © {year} Opita Code &middot; {t(lang, 'footer.founder-name')} &middot;
+          <span class="country">{t(lang, 'footer.country')}</span>
+        </p>
 
         <!-- Habeas Data + Trust signals (Ley 1581/2012) -->
-        <div class="border-t border-border-base pt-6 flex flex-col items-center gap-3">
-          <div class="flex flex-wrap justify-center gap-x-4 gap-y-2 text-xs text-text-muted">
-            <span class="font-medium">📋 {t(lang, 'legal.habeas-data')}</span>
-            <span aria-hidden="true">·</span>
-            <span class="font-medium">{t(lang, 'legal.estatuto')}</span>
-            <span aria-hidden="true">·</span>
+        <div class="footer__trust">
+          <div class="footer__trust-row">
+            <span>📋 {t(lang, 'legal.habeas-data')}</span>
+            <span class="footer__trust-row-sep" aria-hidden="true">·</span>
+            <span>{t(lang, 'legal.estatuto')}</span>
+            <span class="footer__trust-row-sep" aria-hidden="true">·</span>
             <span class="font-mono">{t(lang, 'legal.nit')}</span>
           </div>
-          <nav class="flex flex-wrap justify-center gap-x-5 gap-y-1 text-xs" aria-label="Legal">
-            <a href="/legal/aviso" class="text-text-muted hover:text-text-base transition-colors underline-offset-2 hover:underline">{t(lang, 'legal.aviso')}</a>
-            <a href="/legal/ptd" class="text-text-muted hover:text-text-base transition-colors underline-offset-2 hover:underline">{t(lang, 'legal.ptd')}</a>
-            <a href="/legal/terminos" class="text-text-muted hover:text-text-base transition-colors underline-offset-2 hover:underline">{t(lang, 'legal.terminos')}</a>
-            <a href="/legal/reclamo" class="text-text-muted hover:text-text-base transition-colors underline-offset-2 hover:underline">{t(lang, 'legal.reclamo')}</a>
-            <a href="mailto:Owner@opitacode.com" class="text-corporate-700 hover:text-corporate-900 transition-colors font-medium">{t(lang, 'legal.dpo')}</a>
-          </nav>
-          <p class="text-xs text-text-muted text-center max-w-xl">{t(lang, 'legal.sla')}</p>
+          <p class="footer__channels-note">{t(lang, 'legal.sla')}</p>
         </div>
       </div>
     </footer>
 
-    <!-- Opita Telemetry -->
+    <!-- Mobile nav + Opita Telemetry (combined for performance) -->
     <script is:inline>
-      (function(){
-        var API="https://api.opitacode.com/core/events/ingest",PID="opitacode-web";
-        var sid=sessionStorage.getItem("opita_session_id");
-        if(!sid){sid=crypto.randomUUID();sessionStorage.setItem("opita_session_id",sid)}
-        var q=[];
-        function t(type,data){q.push({type:type,source:"landing",timestamp:new Date().toISOString(),data:data||{}});if(q.length>=10)f()}
-        function f(){if(!q.length)return;var p=JSON.stringify({events:q.splice(0),sessionId:sid,productId:PID});if(navigator.sendBeacon){navigator.sendBeacon(API,p)}else{fetch(API,{method:"POST",headers:{"Content-Type":"application/json"},body:p,keepalive:true}).catch(function(){})}}
-        var ps=new URLSearchParams(location.search);
-        t("page_view",{url:location.pathname,referrer:document.referrer||"",utm_source:ps.get("utm_source"),utm_medium:ps.get("utm_medium"),utm_campaign:ps.get("utm_campaign")});
-        t("session_start",{url:location.pathname});
-        // CTA click — uses i18n label set by data attr (data-cta-label) so EN landing fires "Let's work together" not "Trabajemos"
-        document.addEventListener("click",function(e){
-          var el=e.target.closest("a[href*='#contact'],a[data-cta-contact]");
-          if(!el)return;
-          var text=(el.textContent||"").trim().slice(0,80);
-          var href=el.getAttribute("href")||"";
-          var section=(el.getAttribute("data-cta-section")||"hero").slice(0,32);
-          t("cta_click",{button:text,href:href,source_section:section,lang:document.documentElement.lang})
-        });
-        document.addEventListener("visibilitychange",function(){if(document.visibilityState==="hidden")f()});
-        window.addEventListener("pagehide",f);
-
-        // Mobile nav toggle (architect: single source, idempotent, no deps)
-        var btn=document.getElementById("mobile-nav-toggle");
-        var nav=document.getElementById("mobile-nav");
-        if(btn&&nav){
-          btn.addEventListener("click",function(){
-            var open=nav.classList.toggle("hidden")===false;
-            btn.setAttribute("aria-expanded",String(open));
-            btn.setAttribute("aria-label",open?"Cerrar menú":"Abrir menú");
+      (function() {
+        // Mobile nav toggle
+        var btn = document.getElementById('nav__mobile-toggle');
+        var nav = document.getElementById('nav__mobile');
+        if (btn && nav) {
+          btn.addEventListener('click', function() {
+            var open = nav.hasAttribute('hidden');
+            if (open) { nav.removeAttribute('hidden'); } else { nav.setAttribute('hidden', ''); }
+            btn.setAttribute('aria-expanded', String(open));
           });
-          // Close mobile nav on link click
-          nav.querySelectorAll("a").forEach(function(a){
-            a.addEventListener("click",function(){
-              nav.classList.add("hidden");
-              btn.setAttribute("aria-expanded","false");
+          nav.querySelectorAll('a').forEach(function(a) {
+            a.addEventListener('click', function() {
+              nav.setAttribute('hidden', '');
+              btn.setAttribute('aria-expanded', 'false');
             });
           });
+        }
+
+        // Opita Telemetry
+        var API = 'https://api.opitacode.com/core/events/ingest';
+        var PID = 'opitacode-web';
+        var sid = sessionStorage.getItem('opita_session_id');
+        if (!sid) { sid = (crypto && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now()); sessionStorage.setItem('opita_session_id', sid); }
+        var q = [];
+        function t(type, data) {
+          q.push({ type: type, source: 'landing', timestamp: new Date().toISOString(), data: data || {} });
+          if (q.length >= 10) f();
+        }
+        function f() {
+          if (!q.length) return;
+          var p = JSON.stringify({ events: q.splice(0), sessionId: sid, productId: PID });
+          if (navigator.sendBeacon) { navigator.sendBeacon(API, p); }
+          else { fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: p, keepalive: true }).catch(function() {}); }
+        }
+        var ps = new URLSearchParams(location.search);
+        t('page_view', {
+          url: location.pathname,
+          referrer: document.referrer || '',
+          utm_source: ps.get('utm_source'),
+          utm_medium: ps.get('utm_medium'),
+          utm_campaign: ps.get('utm_campaign')
+        });
+        t('session_start', { url: location.pathname });
+        document.addEventListener('click', function(e) {
+          var el = e.target.closest('a[href*="#contact"], a[data-cta-contact]');
+          if (!el) return;
+          var text = (el.textContent || '').trim().slice(0, 80);
+          var href = el.getAttribute('href') || '';
+          var section = (el.getAttribute('data-cta-section') || 'hero').slice(0, 32);
+          t('cta_click', { button: text, href: href, source_section: section, lang: document.documentElement.lang });
+        });
+        document.addEventListener('visibilitychange', function() { if (document.visibilityState === 'hidden') f(); });
+        window.addEventListener('pagehide', f);
+
+        // Hero entrance — fires once per session
+        var hero = document.querySelector('.hero');
+        if (hero && !sessionStorage.getItem('opita-hero-animated')) {
+          sessionStorage.setItem('opita-hero-animated', '1');
+          hero.classList.add('hero-animate-in');
+        }
+
+        // Scroll reveals — IntersectionObserver, gated by reduced-motion
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          var els = document.querySelectorAll('.reveal, .reveal-group');
+          if (els.length) {
+            var observer = new IntersectionObserver(function(entries) {
+              entries.forEach(function(entry) {
+                if (!entry.isIntersecting) return;
+                var el = entry.target;
+                if (el.classList.contains('reveal-group')) {
+                  el.querySelectorAll('.reveal').forEach(function(child, i) {
+                    child.style.setProperty('transition-delay', (i * 80) + 'ms');
+                    child.classList.add('reveal--visible');
+                  });
+                } else {
+                  el.classList.add('reveal--visible');
+                }
+                observer.unobserve(el);
+              });
+            }, { threshold: 0.15 });
+            els.forEach(function(el) { observer.observe(el); });
+          }
         }
       })();
     </script>

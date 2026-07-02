@@ -1,5 +1,6 @@
 {
   "nav": {
+    "services": "Servicios",
     "ecosystem": "Ecosistema",
     "about": "Nosotros",
     "contact": "Contacto",
@@ -13,7 +14,10 @@
     "close-menu": "Cerrar menú"
   },
   "footer": {
+    "label": "Pie de página",
     "tagline": "Software práctico para negocios reales. Hecho en Colombia 🇨🇴",
+    "founder-name": "Juan Nicolás Urrutia Salcedo",
+    "country": "Hecho en Colombia 🇨🇴",
     "copyright": "© {year} Opita Code."
   },
   "theme": {
