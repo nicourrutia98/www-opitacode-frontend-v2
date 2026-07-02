@@ -1,0 +1,44 @@
+---
+/**
+ * StatCard — renderiza un stat del ecosistema desde ecosystem-stats.json.
+ * Muestra el value grande + label pequeño + opcional link externo.
+ * Si href es null, renderiza un <div> en vez de <a>.
+ */
+interface Props {
+  value: string;
+  label: string;
+  href: string | null;
+  icon: string;
+}
+
+const { value, label, href, icon: _icon } = Astro.props;
+const isLinked = !!href;
+---
+
+<div class="text-center p-4 rounded-lg border border-border-base bg-bg-base/50 hover:border-corporate-300 dark:hover:border-corporate-700 transition-colors">
+  {isLinked ? (
+    <a
+      href={href!}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="block group"
+      aria-label={`${value} — ${label}`}
+    >
+      <div class="text-3xl sm:text-4xl font-extrabold text-corporate-900 dark:text-corporate-100 tabular-nums group-hover:text-corporate-700 dark:group-hover:text-corporate-300 transition-colors">
+        {value}
+      </div>
+      <div class="text-xs sm:text-sm text-text-muted mt-1 font-medium uppercase tracking-wide">
+        {label}
+      </div>
+    </a>
+  ) : (
+    <div aria-label={`${value} — ${label}`}>
+      <div class="text-3xl sm:text-4xl font-extrabold text-corporate-900 dark:text-corporate-100 tabular-nums">
+        {value}
+      </div>
+      <div class="text-xs sm:text-sm text-text-muted mt-1 font-medium uppercase tracking-wide">
+        {label}
+      </div>
+    </div>
+  )}
+</div>

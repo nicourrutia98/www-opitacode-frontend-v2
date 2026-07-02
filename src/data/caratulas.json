@@ -1,0 +1,86 @@
+{
+  "sociedad-opita": {
+    "initials": "SO",
+    "logoLight": "/opita-horizontal-light.svg",
+    "logoFilter": "brightness(0) saturate(100%) invert(28%) sepia(18%) saturate(1200%) hue-rotate(15deg) brightness(95%) contrast(88%)",
+    "pattern": "people",
+    "layout": "monument",
+    "trust_es": "12.908 hab documentados",
+    "trust_en": "12,908 residents documented",
+    "signature": null,
+    "pattern_note_es": "12 figuritas — los 41 perfiles documentados de Tello"
+  },
+  "opita-trabajos": {
+    "initials": "OT",
+    "logoLight": null,
+    "pattern": "lines",
+    "layout": "aggregator",
+    "trust_es": "5+ portales · 906 tests",
+    "trust_en": "5+ portals · 906 tests",
+    "signature": null
+  },
+  "vibe-studio": {
+    "initials": "VS",
+    "logoLight": "/vibe-logo.svg",
+    "logoFilter": "brightness(0) saturate(100%) invert(35%) sepia(80%) saturate(400%) hue-rotate(140deg) brightness(95%) contrast(90%)",
+    "pattern": "code",
+    "layout": "editor",
+    "trust_es": "Desde $0 · 150K tokens",
+    "trust_en": "From $0 · 150K tokens",
+    "signature": null
+  },
+  "darkagents": {
+    "initials": "da",
+    "logoLight": null,
+    "pattern": "blocks",
+    "layout": "terminal",
+    "trust_es": "$25 USD · 92 herramientas",
+    "trust_en": "$25 USD · 92 tools",
+    "signature": null
+  },
+  "opita-developer": {
+    "initials": "OD",
+    "logoLight": null,
+    "pattern": "code",
+    "layout": "architect",
+    "trust_es": "100+ deployments · 99.99% uptime",
+    "trust_en": "100+ deployments · 99.99% uptime",
+    "signature": null
+  },
+  "opita-os": {
+    "initials": "OS",
+    "logoLight": null,
+    "pattern": "blocks",
+    "layout": "flagship",
+    "trust_es": "8 suscripciones → 1 consola",
+    "trust_en": "8 subscriptions → 1 console",
+    "signature": null
+  },
+  "opita-market": {
+    "initials": "OM",
+    "logoLight": null,
+    "pattern": "dots",
+    "layout": "waitlist",
+    "trust_es": "Beta con 0% comisión · Q3 2026",
+    "trust_en": "Beta with 0% commission · Q3 2026",
+    "signature": "by Opita Code"
+  },
+  "opita-studio": {
+    "initials": "OSt",
+    "logoLight": null,
+    "pattern": "waves",
+    "layout": "studio",
+    "trust_es": "Tu marca · en video",
+    "trust_en": "Your brand · on video",
+    "signature": "by Opita Code"
+  },
+  "opita-barber": {
+    "initials": "OB",
+    "logoLight": null,
+    "pattern": "grid",
+    "layout": "barber",
+    "trust_es": "Beta gratis 30 días · 50 cupos",
+    "trust_en": "Free 30-day beta · 50 spots",
+    "signature": "by Opita Code"
+  }
+}

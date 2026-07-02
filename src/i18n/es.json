@@ -1,0 +1,86 @@
+{
+  "nav": {
+    "ecosystem": "Ecosistema",
+    "about": "Nosotros",
+    "contact": "Contacto",
+    "my-account": "Mi Cuenta"
+  },
+  "header": {
+    "logo-alt": "Opita Code",
+    "lang-switcher": "Cambiar idioma",
+    "main-nav": "Navegación principal",
+    "open-menu": "Abrir menú",
+    "close-menu": "Cerrar menú"
+  },
+  "footer": {
+    "tagline": "Software práctico para negocios reales. Hecho en Colombia 🇨🇴",
+    "copyright": "© {year} Opita Code."
+  },
+  "theme": {
+    "toggle-light": "Cambiar a tema claro",
+    "toggle-dark": "Cambiar a tema oscuro"
+  },
+  "meta": {
+    "organization-name": "Opita Code",
+    "organization-tagline": "Software práctico para negocios reales. Hecho en Colombia 🇨🇴"
+  },
+  "common": {
+    "coming-soon": "Próximamente",
+    "in-development": "EN DESARROLLO",
+    "learn-more": "Conocer más",
+    "coming-soon-cta": "Avísame cuando salga"
+  },
+  "hero": {
+    "eyebrow": "Hecho en Colombia 🇨🇴",
+    "title-pre": "Software práctico para",
+    "title-post": "negocios reales.",
+    "subtitle": "No construimos código por construir. Desarrollamos herramientas, automatizaciones y productos SaaS que resuelven problemas concretos de tu operación diaria.",
+    "cta-explore": "Explorar el Ecosistema",
+    "cta-contact": "Conversemos"
+  },
+  "cta": {
+    "whatsapp-base": "https://wa.me/573126126085",
+    "whatsapp-default-message": "Hola Nicolás, me interesa Opita Code. ¿Me cuentas más?",
+    "email": "owner@opitacode.com"
+  },
+  "conversion-channels": {
+    "title": "Conversemos",
+    "subtitle": "Elige el canal que prefieras. Te respondemos una persona real en menos de 24h.",
+    "whatsapp-label": "WhatsApp",
+    "email-label": "Correo",
+    "github-label": "GitHub",
+    "linkedin-label": "LinkedIn",
+    "youtube-label": "YouTube"
+  },
+  "product-card": {
+    "live-badge": null,
+    "in-development-badge": "EN DESARROLLO"
+  },
+  "ecosystem": {
+    "eyebrow": "Ecosistema",
+    "title": "Productos Destacados",
+    "subtitle": "Nuestra infraestructura central y plataformas públicas diseñadas con los mismos estándares de calidad que aplicamos a nuestros clientes."
+  },
+  "contact": {
+    "name-label": "Tu nombre",
+    "email-label": "Correo electrónico",
+    "message-label": "¿En qué te podemos ayudar?",
+    "submit": "Enviar mensaje",
+    "loading": "Enviando...",
+    "success": "¡Gracias! Te respondemos en menos de 24 horas.",
+    "send-another": "Enviar otro mensaje",
+    "error-default": "No pudimos enviar el mensaje. Por favor intenta de nuevo o escríbenos a owner@opitacode.com.",
+    "error-honeypot": "Mensaje detectado como spam. Si eres humano, escríbenos directo a owner@opitacode.com."
+  },
+  "legal": {
+    "habeas-data": "Cumplimos Ley 1581/2012 (Habeas Data)",
+    "estatuto": "Estatuto Consumidor 1480/2011",
+    "aviso": "Aviso de Privacidad",
+    "ptd": "Política de Tratamiento de Datos",
+    "terminos": "Términos y Condiciones",
+    "reclamo": "Libro de Reclamaciones",
+    "dpo": "DPO: Owner@opitacode.com",
+    "sla": "Respondemos solicitudes de datos en 15 días hábiles (SIC)",
+    "nit": "NIT 1007465784-7"
+  }
+}

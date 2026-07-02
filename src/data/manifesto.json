@@ -1,0 +1,48 @@
+{
+  "title_es": "Manifiesto",
+  "title_en": "Manifesto",
+  "subtitle_es": "Cómo construimos en Opita Code — no cómo lo vendemos.",
+  "subtitle_en": "How we build at Opita Code — not how we sell it.",
+  "principles": [
+    {
+      "id": "infraestructura-no-marketing",
+      "number": "01",
+      "title_es": "Infraestructura, no marketing",
+      "title_en": "Infrastructure, not marketing",
+      "body_es": "Construimos cosas que funcionan, no slides que convencen. Si un claim no se puede defender con un URL, un commit, o un log, no lo publicamos. Las demos son código corriendo, no videos producidos.",
+      "body_en": "We build things that work, not slides that persuade. If a claim can't be defended with a URL, a commit, or a log, we don't publish it. Demos are running code, not produced videos."
+    },
+    {
+      "id": "numeros-no-adjetivos",
+      "number": "02",
+      "title_es": "Números, no adjetivos",
+      "title_en": "Numbers, not adjectives",
+      "body_es": "Decimos \"89 hallazgos\" o \"15 días hábiles\". Nunca \"robusto\", \"escalable\", \"innovador\". Un pentester serio no usa superlativos — usa evidencia. Mismo estándar para nuestro copy.",
+      "body_en": "We say \"89 findings\" or \"15 business days\". Never \"robust\", \"scalable\", \"innovative\". A serious pentester doesn't use superlatives — they use evidence. Same standard for our copy."
+    },
+    {
+      "id": "hecho-en-colombia",
+      "number": "03",
+      "title_es": "Hecho en Colombia 🇨🇴",
+      "title_en": "Made in Colombia 🇨🇴",
+      "body_es": "El equipo, los clientes, los usuarios están en Colombia. Eso no es un badge — es contexto. Construimos con +57, COP, Nequi, Daviplata, Bancolombia, DIAN, RUES. Sin traducir el problema a Silicon Valley.",
+      "body_en": "The team, the clients, the users are in Colombia. That's not a badge — it's context. We build with +57, COP, Nequi, Daviplata, Bancolombia, DIAN, RUES. Without translating the problem to Silicon Valley."
+    },
+    {
+      "id": "open-spec-antes-de-codigo",
+      "number": "04",
+      "title_es": "OpenSpec antes de código",
+      "title_en": "OpenSpec before code",
+      "body_es": "Cada producto arranca con un spec abierto, no con un repo. Proposals, design, tasks, then apply. La revisión del operador es el merge gate. Si el spec cambia, el spec se actualiza antes que el código.",
+      "body_en": "Every product starts with an open spec, not a repo. Proposals, design, tasks, then apply. Operator review is the merge gate. If the spec changes, the spec is updated before the code."
+    },
+    {
+      "id": "shippear-o-borrar",
+      "number": "05",
+      "title_es": "Shippear o borrar",
+      "title_en": "Ship it or delete it",
+      "body_es": "No acumulamos specs zombies. Si un proyecto no se mueve en 90 días, lo cerramos — el spec queda en el repo, no en un dashboard. Los repos activos son los que el operador revisa semanalmente.",
+      "body_en": "We don't accumulate zombie specs. If a project doesn't move in 90 days, we close it — the spec stays in the repo, not in a dashboard. Active repos are the ones the operator reviews weekly."
+    }
+  ]
+}

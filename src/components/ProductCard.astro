@@ -1,0 +1,541 @@
+---
+/**
+ * ProductCard — mini-ad per-product, con:
+ *  - Hero (16:9) con logo real o wordmark + pattern distintivo
+ *  - Trust signal específico por producto (psychologist: lo que más mueve al target)
+ *  - Per-product layout variant (monument, aggregator, editor, terminal, etc.)
+ *  - CTA contextual (LIVE → solid green, waitlist → outlined, flagship → big)
+ *  - 6 patterns únicos (grid, lines, dots, people, code, blocks, waves)
+ */
+import { t, type Lang } from '../i18n';
+import type { Product } from '../data/types';
+import { ctaUrlForProduct } from '../data/types';
+import caratulas from '../data/caratulas.json';
+import { ICON_PATHS } from '../lib/icon-paths';
+
+interface Props {
+  product: Product;
+  lang: Lang;
+}
+
+const { product, lang } = Astro.props;
+
+const status = product.status;
+const ctaUrl = ctaUrlForProduct(product, lang);
+const isWhatsApp = ctaUrl.startsWith('https://wa.me/');
+const ctaLabel = lang === 'es' ? product.cta_label_es : product.cta_label_en;
+const tagline = lang === 'es' ? product.tagline_es : product.tagline_en;
+const description = lang === 'es' ? product.description_es : product.description_en;
+
+const colorClass = `caratula--${product.color}`;
+const caratulaDef = (caratulas as any)[product.id] || {};
+const initials = caratulaDef.initials || product.name.slice(0, 2).toUpperCase();
+const hasOwnLogo = !!caratulaDef.logoLight;
+const pattern = caratulaDef.pattern || 'dots';
+const layout = caratulaDef.layout || 'default';
+const trustSignal = lang === 'es' ? caratulaDef.trust_es : caratulaDef.trust_en;
+const signature = caratulaDef.signature || null;
+
+// LIVE badge: badge verde distintivo para productos en vivo
+const liveBadge = lang === 'es' ? 'EN VIVO' : 'LIVE';
+const waitingBadge = lang === 'es' ? 'EN DESARROLLO' : 'IN DEVELOPMENT';
+const showStatusBadge = status === 'live' ? liveBadge : waitingBadge;
+
+// CTA variant per layout
+const ctaVariant = layout === 'flagship' ? 'primary' : layout === 'waitlist' ? 'outline' : 'default';
+const iconPath = ICON_PATHS[product.icon] || ICON_PATHS.layers;
+---
+
+<article
+  class={`product-card product-card--${layout} reveal`}
+  data-product-id={product.id}
+  data-product-status={status}
+  data-layout={layout}
+>
+  <!-- Carátula: hero con logo real o wordmark + pattern distintivo -->
+  <div class={`caratula ${colorClass} caratula--${pattern}`} aria-hidden="true">
+    {hasOwnLogo ? (
+      <img
+        class="caratula__logo"
+        src={caratulaDef.logoLight}
+        alt=""
+        loading="lazy"
+        decoding="async"
+        style={`filter: ${caratulaDef.logoFilter || 'none'}`}
+      />
+    ) : (
+      <>
+        <svg class="caratula__pattern" viewBox="0 0 100 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          {pattern === 'grid' && (
+            <g fill="currentColor" opacity="0.4">
+              {Array.from({ length: 20 }).map((_, i) => (
+                <circle key={`g-${i}`} cx={5 + (i % 10) * 10} cy={5 + Math.floor(i / 10) * 10} r="0.8" />
+              ))}
+            </g>
+          )}
+          {pattern === 'lines' && (
+            <g stroke="currentColor" stroke-width="0.3" opacity="0.5">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <line key={`l-${i}`} x1="0" y1={10 + i * 10} x2="100" y2={10 + i * 10} />
+              ))}
+            </g>
+          )}
+          {pattern === 'dots' && (
+            <g fill="currentColor" opacity="0.4">
+              {Array.from({ length: 50 }).map((_, i) => {
+                const x = (i * 13) % 100;
+                const y = (i * 7) % 60;
+                return <circle key={`d-${i}`} cx={x} cy={y} r="0.6" />;
+              })}
+            </g>
+          )}
+          {pattern === 'people' && (
+            <g fill="currentColor" opacity="0.4">
+              {Array.from({ length: 12 }).map((_, i) => {
+                const x = 8 + (i % 4) * 28;
+                const y = 8 + Math.floor(i / 4) * 22;
+                return (
+                  <g key={`p-${i}`} transform={`translate(${x} ${y})`}>
+                    <circle cx="0" cy="0" r="1.5" />
+                    <path d="M -3 4 Q 0 1.5 3 4 L 3 7 L -3 7 Z" />
+                  </g>
+                );
+              })}
+            </g>
+          )}
+          {pattern === 'code' && (
+            <g fill="currentColor" opacity="0.35" font-family="monospace" font-size="4">
+              <text x="2" y="8">{`{ }`}</text>
+              <text x="14" y="14">{`</>`}</text>
+              <text x="26" y="8">{`( )`}</text>
+              <text x="38" y="14">{`[ ]`}</text>
+              <text x="50" y="8">{`=>`}</text>
+              <text x="62" y="14">{`fn`}</text>
+              <text x="74" y="8">{`()`}</text>
+              <text x="86" y="14">{`if`}</text>
+              <text x="2" y="22">{`=>`}</text>
+              <text x="14" y="28">{`for`}</text>
+              <text x="26" y="22">{`let`}</text>
+              <text x="38" y="28">{`var`}</text>
+              <text x="50" y="22">{`end`}</text>
+              <text x="62" y="28">{`use`}</text>
+              <text x="74" y="22">{`def`}</text>
+              <text x="86" y="28">{`/>`}</text>
+            </g>
+          )}
+          {pattern === 'blocks' && (
+            <g fill="currentColor" opacity="0.35">
+              {Array.from({ length: 18 }).map((_, i) => {
+                const w = 6 + (i % 3) * 4;
+                const h = 4 + (i % 2) * 2;
+                const x = 4 + (i % 6) * 16;
+                const y = 4 + Math.floor(i / 6) * 16;
+                return <rect key={`b-${i}`} x={x} y={y} width={w} height={h} rx="1" />;
+              })}
+            </g>
+          )}
+          {pattern === 'waves' && (
+            <g stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.4">
+              {[0, 1, 2].map((row) => (
+                <path
+                  key={`w-${row}`}
+                  d={`M 0 ${15 + row * 18} Q 25 ${8 + row * 18} 50 ${15 + row * 18} T 100 ${15 + row * 18}`}
+                />
+              ))}
+            </g>
+          )}
+        </svg>
+
+        <div class="caratula__wordmark">
+          <span class="caratula__initials">{initials}</span>
+          {signature && (
+            <span class="caratula__signature">{signature}</span>
+          )}
+        </div>
+      </>
+    )}
+
+    <!-- Status badge flotante en la carátula (LIVE verde o EN DESARROLLO ámbar) -->
+    <span class={`caratula__status caratula__status--${status === 'live' ? 'live' : 'wip'}`} aria-label={showStatusBadge}>
+      <span class="caratula__status-dot"></span>
+      {showStatusBadge}
+    </span>
+
+    <!-- Icon corner mark -->
+    <div class="caratula__corner">
+      <svg class="caratula__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" set:html={iconPath} />
+    </div>
+  </div>
+
+  <div class="product-card__body">
+    <h3 class="product-card__title">{product.name}</h3>
+    <p class="product-card__tagline">{tagline}</p>
+
+    <!-- Trust signal: el número que mueve al target user -->
+    {trustSignal && (
+      <div class="product-card__trust">
+        <span class="product-card__trust-bullet">●</span>
+        <span class="product-card__trust-text">{trustSignal}</span>
+      </div>
+    )}
+
+    <p class="product-card__desc">{description}</p>
+
+    <a
+      href={ctaUrl}
+      target={isWhatsApp ? '_blank' : undefined}
+      rel={isWhatsApp ? 'noopener noreferrer' : undefined}
+      data-product-cta={product.id}
+      class={`product-card__cta product-card__cta--${ctaVariant}`}
+      aria-label={`${ctaLabel} — ${product.name}`}
+    >
+      <span class="product-card__cta-text">{ctaLabel}</span>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="product-card__cta-arrow" aria-hidden="true">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    </a>
+  </div>
+</article>
+
+<style>
+  /* ═══ Product card — base ═══ */
+  .product-card {
+    border: 1px solid var(--border-base);
+    border-radius: 16px;
+    background: var(--bg-base);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: border-color var(--motion-standard) var(--ease-standard),
+                transform var(--motion-standard) var(--ease-standard),
+                box-shadow var(--motion-standard) var(--ease-standard);
+  }
+  .product-card:hover {
+    border-color: var(--text-base);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px -8px color-mix(in oklch, var(--text-base) 20%, transparent);
+  }
+  :root.dark .product-card:hover {
+    border-color: var(--color-inverse-ink);
+  }
+
+  /* ═══ Body ═══ */
+  .product-card__body {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+  .product-card__title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    font-family: var(--font-heading);
+    color: var(--text-base);
+  }
+  .product-card__tagline {
+    font-size: 0.88rem;
+    color: var(--color-accent);
+    font-weight: 500;
+    line-height: 1.35;
+  }
+  .product-card__desc {
+    font-size: 0.88rem;
+    color: var(--text-base);
+    line-height: 1.55;
+    flex: 1;
+    opacity: 0.85;
+  }
+
+  /* ═══ Trust signal: specific number that sells ═══ */
+  .product-card__trust {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 0;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--color-accent);
+  }
+  .product-card__trust-bullet {
+    font-size: 0.5rem;
+    line-height: 1;
+  }
+  .product-card__trust-text {
+    font-family: var(--font-mono);
+    letter-spacing: -0.01em;
+  }
+
+  /* ═══ CTA — 3 variants ═══ */
+  .product-card__cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 12px;
+    padding: 12px 18px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: background var(--motion-quick) var(--ease-standard),
+                border-color var(--motion-quick) var(--ease-standard),
+                color var(--motion-quick) var(--ease-standard),
+                transform var(--motion-quick) var(--ease-standard);
+    border: 1.5px solid var(--text-base);
+    color: var(--text-base);
+    background: transparent;
+  }
+  .product-card__cta:hover {
+    background: var(--text-base);
+    color: var(--bg-base);
+  }
+  .product-card__cta-arrow { width: 14px; height: 14px; flex-shrink: 0; }
+  .product-card__cta--primary {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-inverse-ink);
+  }
+  .product-card__cta--primary:hover {
+    background: var(--color-accent-hover);
+    border-color: var(--color-accent-hover);
+  }
+  .product-card__cta--outline {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+  .product-card__cta--outline:hover {
+    background: var(--color-accent);
+    color: var(--color-inverse-ink);
+  }
+
+  /* ═══ Layout variants: per-product custom CSS ═══ */
+
+  /* flagship: Opita OS — big card, more emphasis */
+  .product-card--flagship {
+    border-color: var(--color-accent);
+    border-width: 2px;
+  }
+  .product-card--flagship .product-card__title {
+    font-size: 1.4rem;
+  }
+  .product-card--flagship .product-card__trust {
+    font-size: 0.85rem;
+  }
+  .product-card--flagship .caratula {
+    aspect-ratio: 21 / 9;
+  }
+
+  /* monument: Sociedad Opita — large hero, photography feel */
+  .product-card--monument .caratula {
+    aspect-ratio: 16 / 9;
+  }
+
+  /* aggregator: Opita Trabajos — portal rows feel */
+  .product-card--aggregator .caratula {
+    aspect-ratio: 16 / 9;
+  }
+
+  /* editor: Vibe Studio — IDE preview feel */
+  .product-card--editor .caratula {
+    aspect-ratio: 16 / 9;
+  }
+
+  /* terminal: dark-agents — CLI terminal feel */
+  .product-card--terminal .caratula {
+    background: var(--color-inverse-paper) !important;
+    color: oklch(0.85 0.15 145) !important; /* terminal green on black */
+  }
+  :root:not(.dark) .product-card--terminal .caratula {
+    background: oklch(0.15 0.01 240) !important;
+    color: oklch(0.85 0.15 145) !important;
+  }
+  .product-card--terminal .caratula__pattern,
+  .product-card--terminal .caratula__initials {
+    color: oklch(0.85 0.15 145);
+  }
+  .product-card--terminal .caratula__corner {
+    background: oklch(0.20 0.01 240);
+    color: oklch(0.85 0.15 145);
+  }
+  .product-card--terminal .caratula__status--live {
+    background: oklch(0.20 0.01 240);
+    color: oklch(0.85 0.15 145);
+  }
+
+  /* architect: Opita Developer — system status feel */
+  .product-card--architect .caratula {
+    background: var(--color-inverse-paper) !important;
+    color: oklch(0.80 0.10 200) !important; /* terminal cyan */
+  }
+  :root:not(.dark) .product-card--architect .caratula {
+    background: oklch(0.12 0.01 240) !important;
+    color: oklch(0.80 0.10 200);
+  }
+  .product-card--architect .caratula__pattern,
+  .product-card--architect .caratula__initials {
+    color: oklch(0.80 0.10 200);
+  }
+  .product-card--architect .caratula__corner {
+    background: oklch(0.18 0.01 240);
+    color: oklch(0.80 0.10 200);
+  }
+  .product-card--architect .caratula__status--live {
+    background: oklch(0.18 0.01 240);
+    color: oklch(0.80 0.10 200);
+  }
+
+  /* waitlist: Opita Market, Opita Barber — "coming soon" feel */
+  .product-card--waitlist .caratula {
+    opacity: 0.85;
+  }
+
+  /* studio: Opita Studio — video waves */
+  .product-card--studio .caratula__icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  /* barber: scissors pattern */
+  .product-card--barber .caratula {
+    /* pattern handled by caratula--grid */
+  }
+</style>
+
+<style is:global>
+  /* ═══ Carátula base (global, since also defined in global.css) ═══ */
+  .caratula {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: 16px 16px 0 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--caratula-bg, var(--bg-muted));
+    border-bottom: 1px solid var(--border-base);
+    color: var(--caratula-icon, var(--text-base));
+  }
+  .caratula::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 20%, var(--caratula-glow, transparent) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, var(--caratula-glow-2, transparent) 0%, transparent 50%);
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  .caratula__pattern {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    color: var(--caratula-icon, var(--text-base));
+  }
+  .caratula__logo {
+    position: relative;
+    z-index: 2;
+    max-width: 60%;
+    max-height: 60%;
+    object-fit: contain;
+  }
+  .caratula__wordmark {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .caratula__initials {
+    font-size: clamp(2.5rem, 6vw, 3.5rem);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--caratula-icon, var(--text-base));
+    font-family: var(--font-heading);
+  }
+  .caratula__signature {
+    font-size: 0.65rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.6;
+  }
+  .caratula__corner {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 3;
+    width: 28px;
+    height: 28px;
+    padding: 5px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.85);
+    color: var(--text-base);
+    backdrop-filter: blur(2px);
+  }
+  :root.dark .caratula__corner { background: rgba(0, 0, 0, 0.5); color: var(--color-inverse-ink); }
+  .caratula__corner .caratula__icon { width: 100%; height: 100%; }
+
+  /* ═══ Status badge flotante en carátula ═══ */
+  .caratula__status {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 4;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-radius: 999px;
+    backdrop-filter: blur(4px);
+  }
+  .caratula__status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .caratula__status--live {
+    background: rgba(22, 163, 74, 0.92);
+    color: white;
+  }
+  .caratula__status--live .caratula__status-dot {
+    background: white;
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.6);
+    animation: pulse-live 2s infinite;
+  }
+  .caratula__status--wip {
+    background: rgba(217, 119, 6, 0.92);
+    color: white;
+  }
+  .caratula__status--wip .caratula__status-dot {
+    background: white;
+  }
+  @keyframes pulse-live {
+    0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.6); }
+    70% { box-shadow: 0 0 0 6px rgba(255, 255, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+  }
+
+  /* Per-product color tokens (per carátula) */
+  .caratula--warm { --caratula-bg: linear-gradient(135deg, #F4E4CC 0%, #E8D4B4 100%); --caratula-glow: oklch(0.65 0.18 50 / 0.35); --caratula-glow-2: oklch(0.55 0.15 35 / 0.25); --caratula-icon: oklch(0.35 0.10 40); }
+  .caratula--cool { --caratula-bg: linear-gradient(135deg, #DAE6F0 0%, #C4D4E4 100%); --caratula-glow: oklch(0.60 0.12 220 / 0.30); --caratula-glow-2: oklch(0.50 0.10 240 / 0.20); --caratula-icon: oklch(0.30 0.08 230); }
+  .caratula--neutral { --caratula-bg: linear-gradient(135deg, #E5E5E0 0%, #D5D5D0 100%); --caratula-glow: oklch(0.50 0.01 240 / 0.30); --caratula-glow-2: oklch(0.40 0.01 240 / 0.20); --caratula-icon: oklch(0.20 0.01 240); }
+  .caratula--corporate { --caratula-bg: linear-gradient(135deg, #E8DCC0 0%, #D4C098 100%); --caratula-glow: oklch(0.65 0.18 46 / 0.35); --caratula-glow-2: oklch(0.55 0.15 35 / 0.25); --caratula-icon: oklch(0.30 0.08 40); }
+
+  /* Dark mode caratula gradients (moved from global.css in Round 2 fix) */
+  :root.dark .caratula { border-color: rgba(255,255,255,0.08); }
+  :root.dark .caratula--warm { --caratula-bg: linear-gradient(135deg, #2A2520 0%, #1F1B17 100%); --caratula-icon: oklch(0.75 0.15 50); }
+  :root.dark .caratula--cool { --caratula-bg: linear-gradient(135deg, #1F252D 0%, #161B22 100%); --caratula-icon: oklch(0.70 0.12 220); }
+  :root.dark .caratula--neutral { --caratula-bg: linear-gradient(135deg, #232323 0%, #1A1A1A 100%); --caratula-icon: oklch(0.80 0.01 240); }
+  :root.dark .caratula--corporate { --caratula-bg: linear-gradient(135deg, #2A2520 0%, #1F1B17 100%); --caratula-icon: oklch(0.75 0.15 46); }
+</style>

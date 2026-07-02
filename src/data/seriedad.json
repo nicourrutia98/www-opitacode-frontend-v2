@@ -1,0 +1,69 @@
+{
+  "metrics": [
+    {
+      "value": "5",
+      "label_es": "portales de empleo agregados",
+      "label_en": "job portals aggregated",
+      "sublabel_es": "Computrabajo, GetOnBoard, Indeed CO, ElEmpleo, Bumeran"
+    },
+    {
+      "value": "906",
+      "label_es": "tests automatizados (Python)",
+      "label_en": "automated tests (Python)",
+      "sublabel_es": "Adapters de scraping + matching engine"
+    },
+    {
+      "value": "101",
+      "label_es": "tests Node.js (v2 backend)",
+      "label_en": "Node.js tests (v2 backend)",
+      "sublabel_es": "API endpoints + auth + idempotencia"
+    },
+    {
+      "value": "9",
+      "label_es": "repos públicos en GitHub",
+      "label_en": "public repos on GitHub",
+      "sublabel_es": "Open source bajo MIT/Apache 2.0"
+    },
+    {
+      "value": "<24h",
+      "label_es": "tiempo de respuesta",
+      "label_en": "response time",
+      "sublabel_es": "Una persona real, no bot"
+    },
+    {
+      "value": "0",
+      "label_es": "críticos en producción (pentest R2)",
+      "label_en": "criticals in production (pentest R2)",
+      "sublabel_es": "89 hallazgos cerrados · Round 2 verificado"
+    }
+  ],
+  "seriedad": {
+    "title_es": "Seriedad",
+    "title_en": "Seriousness",
+    "subtitle_es": "Lo que no se ve — pero sostiene todo lo que se ve.",
+    "subtitle_en": "What you don't see — but holds up everything you do see.",
+    "items": [
+      {
+        "icon": "shield",
+        "title_es": "Pentest documentado",
+        "title_en": "Documented pentest",
+        "body_es": "Round 2 cerrado con 89 hallazgos resueltos y 0 críticos en producción. Cada PR mergeada pasa por el mismo control de calidad que un pentester externo exige.",
+        "body_en": "Round 2 closed with 89 findings resolved and 0 criticals in production. Every merged PR goes through the same quality control an external pentester demands."
+      },
+      {
+        "icon": "code",
+        "title_es": "OpenSpec como contrato",
+        "title_en": "OpenSpec as the contract",
+        "body_es": "Cada producto arranca con un spec abierto (proposal → design → tasks → apply) antes que una línea de código. El operador revisa y aprueba. Sin OpenSpec, no hay merge.",
+        "body_en": "Every product starts with an open spec (proposal → design → tasks → apply) before any line of code. The operator reviews and approves. No OpenSpec, no merge."
+      },
+      {
+        "icon": "lock",
+        "title_es": "Cumplimiento verificable",
+        "title_en": "Verifiable compliance",
+        "body_es": "Ley 1581/2012 (Habeas Data), Decreto 1377/2013, Circular SIC 02/2015. RNBD registrado. WCAG 2.2 AA verificado. Sin asteriscos.",
+        "body_en": "Ley 1581/2012 (Habeas Data), Decreto 1377/2013, SIC Circular 02/2015. RNBD registered. WCAG 2.2 AA verified. No asterisks."
+      }
+    ]
+  }
+}

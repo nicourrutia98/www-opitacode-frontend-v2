@@ -1,0 +1,86 @@
+{
+  "nav": {
+    "ecosystem": "Ecosystem",
+    "about": "About",
+    "contact": "Contact",
+    "my-account": "My Account"
+  },
+  "header": {
+    "logo-alt": "Opita Code",
+    "lang-switcher": "Switch language",
+    "main-nav": "Main navigation",
+    "open-menu": "Open menu",
+    "close-menu": "Close menu"
+  },
+  "footer": {
+    "tagline": "Practical software for real businesses. Made in Colombia 🇨🇴",
+    "copyright": "© {year} Opita Code."
+  },
+  "theme": {
+    "toggle-light": "Switch to light theme",
+    "toggle-dark": "Switch to dark theme"
+  },
+  "meta": {
+    "organization-name": "Opita Code",
+    "organization-tagline": "Practical software for real businesses. Made in Colombia 🇨🇴"
+  },
+  "common": {
+    "coming-soon": "Coming soon",
+    "in-development": "IN DEVELOPMENT",
+    "learn-more": "Learn more",
+    "coming-soon-cta": "Notify me when it launches"
+  },
+  "hero": {
+    "eyebrow": "Made in Colombia 🇨🇴",
+    "title-pre": "Practical software for",
+    "title-post": "real businesses.",
+    "subtitle": "We don't build code for the sake of building. We develop tools, automations and SaaS products that solve concrete problems of your daily operation.",
+    "cta-explore": "Explore the Ecosystem",
+    "cta-contact": "Let's talk"
+  },
+  "cta": {
+    "whatsapp-base": "https://wa.me/573126126085",
+    "whatsapp-default-message": "Hi Nicolás, I'm interested in Opita Code. Can you tell me more?",
+    "email": "owner@opitacode.com"
+  },
+  "conversion-channels": {
+    "title": "Let's talk",
+    "subtitle": "Pick the channel you prefer. A real person responds in less than 24h.",
+    "whatsapp-label": "WhatsApp",
+    "email-label": "Email",
+    "github-label": "GitHub",
+    "linkedin-label": "LinkedIn",
+    "youtube-label": "YouTube"
+  },
+  "product-card": {
+    "live-badge": null,
+    "in-development-badge": "IN DEVELOPMENT"
+  },
+  "ecosystem": {
+    "eyebrow": "Ecosystem",
+    "title": "Featured Products",
+    "subtitle": "Our core infrastructure and public platforms designed with the same quality standards we apply to our clients."
+  },
+  "contact": {
+    "name-label": "Your name",
+    "email-label": "Email address",
+    "message-label": "How can we help?",
+    "submit": "Send message",
+    "loading": "Sending...",
+    "success": "Thanks! We'll get back to you within 24 hours.",
+    "send-another": "Send another message",
+    "error-default": "We couldn't send the message. Please try again or write to owner@opitacode.com.",
+    "error-honeypot": "Message detected as spam. If you're human, write us directly at owner@opitacode.com."
+  },
+  "legal": {
+    "habeas-data": "We comply with Colombian Habeas Data Law (Ley 1581/2012)",
+    "estatuto": "Colombian Consumer Statute (1480/2011)",
+    "aviso": "Privacy Notice",
+    "ptd": "Data Treatment Policy",
+    "terminos": "Terms and Conditions",
+    "reclamo": "Complaints Book",
+    "dpo": "DPO: Owner@opitacode.com",
+    "sla": "We respond to data requests within 15 business days (SIC)",
+    "nit": "NIT 1007465784-7"
+  }
+}

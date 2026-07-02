@@ -1,0 +1,10 @@
+# @ts-check
+# Cloudflare Pages project: opita-code
+# URL: https://www.opitacode.com
+#
+# This file is OPTIONAL — wrangler reads the Cloudflare Pages project settings by name.
+# Kept here for local deploys and as documentation of the deployment target.
+
+name = "opita-code"
+compatibility_date = "2025-01-01"
+pages_build_output_dir = "./dist"

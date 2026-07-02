@@ -1,0 +1,236 @@
+---
+/**
+ * LegalLayout — minimal layout for /legal/* pages.
+ * Con header simple (logo + volver), main content slot, footer con datos de contacto.
+ * Estilo formal con "usted" (per colombia-conventions).
+ */
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  lastUpdated: string;
+  lang: 'es' | 'en';
+  section: 'aviso' | 'ptd' | 'terminos' | 'reclamo';
+  schema?: Record<string, any>;
+}
+
+const { title, description, lastUpdated, lang, section, schema } = Astro.props;
+const homeHref = lang === 'es' ? '/es' : '/en';
+const backLabel = lang === 'es' ? '← Volver al inicio' : '← Back to home';
+const lastUpdatedLabel = lang === 'es' ? 'Última actualización' : 'Last updated';
+
+// Linked legal sections in current language
+const sections = lang === 'es'
+  ? [
+      { id: 'aviso', href: '/es/legal/aviso', label: 'Aviso de Privacidad' },
+      { id: 'ptd', href: '/es/legal/ptd', label: 'Política de Tratamiento de Datos' },
+      { id: 'terminos', href: '/es/legal/terminos', label: 'Términos y Condiciones' },
+      { id: 'reclamo', href: '/es/legal/reclamo', label: 'Libro de Reclamaciones' },
+    ]
+  : [
+      { id: 'aviso', href: '/en/legal/aviso', label: 'Privacy Notice' },
+      { id: 'ptd', href: '/en/legal/ptd', label: 'Data Treatment Policy' },
+      { id: 'terminos', href: '/en/legal/terminos', label: 'Terms and Conditions' },
+      { id: 'reclamo', href: '/en/legal/reclamo', label: 'Complaints Book' },
+    ];
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="robots" content="index, follow" />
+    {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+  </head>
+  <body class="legal-page">
+    <header class="legal-header">
+      <div class="legal-header__inner">
+        <a href={homeHref} class="legal-header__brand" aria-label="Opita Code — inicio">
+          <img src="/opita-code-horizontal-black-v4.png" alt="Opita Code" class="legal-header__logo dark:hidden" width="121" height="28" />
+          <img src="/opita-code-horizontal-white-v4.png" alt="Opita Code" class="legal-header__logo hidden dark:block" width="121" height="28" />
+        </a>
+        <a href={homeHref} class="legal-header__back">{backLabel}</a>
+      </div>
+    </header>
+
+    <main class="legal-main">
+      <div class="legal-layout">
+        <aside class="legal-aside" aria-label="Secciones legales">
+          <p class="legal-aside__eyebrow">{lang === 'es' ? 'Legal' : 'Legal'}</p>
+          <ul class="legal-aside__list">
+            {sections.map((s) => (
+              <li>
+                <a
+                  href={s.href}
+                  class={`legal-aside__link ${s.id === section ? 'is-active' : ''}`}
+                  aria-current={s.id === section ? 'page' : undefined}
+                >
+                  {s.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </aside>
+
+        <article class="legal-article">
+          <h1 class="legal-h1"><slot name="title" /></h1>
+          <p class="legal-updated">{lastUpdatedLabel}: {lastUpdated}</p>
+          <slot />
+        </article>
+      </div>
+    </main>
+
+    <footer class="legal-footer">
+      <div class="legal-footer__inner">
+        <p>
+          <strong>Opita Code SAS</strong> · NIT 1007465784-7 · Neiva, Huila, Colombia
+        </p>
+        <p>
+          {lang === 'es' ? 'Datos Personales' : 'Personal Data'}: <a href="mailto:Owner@opitacode.com">Owner@opitacode.com</a> · +57 312 612 6085
+        </p>
+        <p class="legal-footer__small">
+          {lang === 'es'
+            ? 'Cumplimos Ley 1581/2012 (Habeas Data) y Estatuto Consumidor 1480/2011. SIC: respondemos en 15 días hábiles.'
+            : 'We comply with Colombian Habeas Data Law (Ley 1581/2012) and Consumer Statute (1480/2011). SIC: we respond within 15 business days.'}
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .legal-page {
+    background: var(--bg-base);
+    color: var(--text-base);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .legal-header {
+    border-bottom: 1px solid var(--border-base);
+    padding: 16px clamp(16px, 4vw, 48px);
+    background: var(--bg-base);
+  }
+  .legal-header__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .legal-header__logo { height: 28px; width: auto; }
+  .legal-header__back {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    margin-left: auto;
+    transition: color var(--motion-quick) var(--ease-standard);
+  }
+  .legal-header__back:hover { color: var(--text-base); }
+
+  .legal-main {
+    flex: 1;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: clamp(32px, 6vh, 64px) clamp(16px, 4vw, 48px);
+  }
+  .legal-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  @media (min-width: 900px) {
+    .legal-layout { grid-template-columns: 220px 1fr; gap: 64px; }
+  }
+  .legal-aside { order: 2; }
+  @media (min-width: 900px) { .legal-aside { order: 1; } }
+  .legal-aside__eyebrow {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-accent);
+    margin-bottom: 12px;
+  }
+  .legal-aside__list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px; }
+  .legal-aside__link {
+    display: block;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: color var(--motion-quick) var(--ease-standard), border-color var(--motion-quick) var(--ease-standard);
+  }
+  .legal-aside__link:hover { color: var(--text-base); border-left-color: var(--border-base); }
+  .legal-aside__link.is-active { color: var(--color-accent); border-left-color: var(--color-accent); font-weight: 600; }
+
+  .legal-article { order: 1; max-width: 720px; }
+  @media (min-width: 900px) { .legal-article { order: 2; } }
+  .legal-h1 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+  .legal-updated {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+  }
+  .legal-article :global(h2) {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 32px;
+    margin-bottom: 8px;
+    color: var(--text-base);
+  }
+  .legal-article :global(h3) {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 20px;
+    margin-bottom: 6px;
+  }
+  .legal-article :global(p) { margin-bottom: 12px; color: var(--text-muted); line-height: 1.7; }
+  .legal-article :global(ul) { margin: 8px 0 16px 20px; }
+  .legal-article :global(li) { margin-bottom: 6px; color: var(--text-muted); line-height: 1.7; }
+  .legal-article :global(strong) { color: var(--text-base); font-weight: 600; }
+  .legal-article :global(a) { color: var(--color-accent); text-decoration: underline; text-underline-offset: 2px; }
+  .legal-article :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 0.88rem;
+  }
+  .legal-article :global(th), .legal-article :global(td) {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border-base);
+    text-align: left;
+  }
+  .legal-article :global(th) { font-weight: 600; color: var(--text-base); }
+
+  .legal-footer {
+    background: var(--color-inverse-paper);
+    color: var(--color-inverse-ink);
+    padding: 32px clamp(16px, 4vw, 48px);
+    margin-top: 64px;
+  }
+  .legal-footer__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    font-size: 0.85rem;
+    line-height: 1.7;
+  }
+  .legal-footer p { color: var(--color-line); margin-bottom: 4px; }
+  .legal-footer a { color: var(--color-accent); text-decoration: none; }
+  .legal-footer a:hover { text-decoration: underline; }
+  .legal-footer__small { font-size: 0.78rem; opacity: 0.7; margin-top: 8px; }
+</style>

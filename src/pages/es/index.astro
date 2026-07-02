@@ -1,0 +1,595 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ContactForm } from '../../components/ContactForm';
+import productsData from '../../data/products.json';
+import manifestoData from '../../data/manifesto.json';
+import seriedadData from '../../data/seriedad.json';
+import ProductCard from '../../components/ProductCard.astro';
+import { t, type Lang } from '../../i18n';
+
+const lang: Lang = 'es';
+const products = productsData.products;
+const manifesto = manifestoData;
+const seriedad = seriedadData;
+const flagship = products.find((p) => p.id === 'opita-os')!;
+const otherProducts = products.filter((p) => p.id !== 'opita-os');
+---
+
+<Layout
+  title="Opita Code | Software práctico para negocios reales"
+  description="Construido desde Colombia con identidad local y ambición global. Ecosistema de productos de software."
+  lang="es"
+>
+  <!-- ═══════════════════════════════════════════
+       Hero
+       ═══════════════════════════════════════════ -->
+  <section class="hero hero-animate-in section" aria-label="Introducción">
+    <div class="container">
+      <p class="hero-badge">Hecho en Colombia 🇨🇴</p>
+      <img
+        class="hero-symbol"
+        src="/opita-symbol-light.svg"
+        alt=""
+        width="80"
+        height="80"
+        aria-hidden="true"
+      />
+      <h1 class="hero-tagline">
+        <span class="hero-word">Software</span>
+        <span class="hero-word">práctico</span>
+        <span class="hero-word">para</span>
+        <span class="hero-word">negocios</span>
+        <span class="hero-word">reales.</span>
+      </h1>
+      <p class="hero-subtitle">
+        Construimos herramientas, automatizaciones y productos SaaS
+        desde Neiva, Huila — para Colombia y LATAM.
+      </p>
+      <div class="hero-actions">
+        <a href="#ecosystem" class="cta-primary">Ver el ecosistema</a>
+        <p class="hero-cta-desc">Respuesta en menos de 24h</p>
+        <a href="#contact" class="cta-secondary" data-cta-contact data-cta-section="hero">Conversemos de tu proyecto</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       Services (legacy 4-card grid)
+       ═══════════════════════════════════════════ -->
+  <section id="servicios" class="section section--light border-b" aria-label="Servicios">
+    <div class="container">
+      <h2 class="section-eyebrow">Qué hacemos</h2>
+      <p class="section-title">Cuatro líneas de trabajo, una sola obsesión: software que funciona.</p>
+      <p class="section-subtitle">No construimos código por construir. Convertimos necesidades reales en sistemas funcionales — con calidad, con propósito, con compromiso.</p>
+
+      <div class="services-grid">
+        <article class="service-card reveal">
+          <div class="service-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="16 18 22 12 16 6"/>
+              <polyline points="8 6 2 12 8 18"/>
+              <line x1="14" y1="4" x2="10" y2="20"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Desarrollo a Medida</h3>
+          <p class="service-card__desc">Aplicaciones web, paneles administrativos, APIs, integraciones y plataformas digitales diseñadas para tu operación.</p>
+        </article>
+
+        <article class="service-card reveal">
+          <div class="service-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+              <path d="M2 17l10 5 10-5"/>
+              <path d="M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Automatización</h3>
+          <p class="service-card__desc">Conectamos tus herramientas, eliminamos tareas repetitivas y creamos flujos que ahorran tiempo y reducen errores.</p>
+        </article>
+
+        <article class="service-card reveal">
+          <div class="service-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="4" width="16" height="16" rx="2"/>
+              <path d="M9 9h.01"/>
+              <path d="M15 9h.01"/>
+              <path d="M9 15h6"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Productos SaaS</h3>
+          <p class="service-card__desc">Plataformas propias bajo suscripción: marketplaces, agregadores, sistemas de turnos y herramientas para tu negocio.</p>
+        </article>
+
+        <article class="service-card reveal">
+          <div class="service-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="23 7 16 12 23 17 23 7"/>
+              <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Opita Developer</h3>
+          <p class="service-card__desc">Construcción de tecnología en vivo: streams, tutoriales y desarrollo de productos reales desde Colombia para la comunidad.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       Flagship (legacy featured card pattern)
+       ═══════════════════════════════════════════ -->
+  <section id="flagship" class="section section--dark" aria-label="Producto Flagship">
+    <div class="container">
+      <h2 class="section-eyebrow">Flagship</h2>
+      <p class="section-title">El sistema que une todo lo demás.</p>
+      <p class="section-subtitle">Esto es lo que estamos construyendo con el mismo estándar que aplicamos a cada proyecto — y es la pieza que falta para que MiPymes colombianas no paguen 8 suscripciones.</p>
+
+      <article class="project-featured reveal">
+        <span class="project-featured__label">Flagship</span>
+        <h3 class="project-featured__title">{flagship.name}</h3>
+        <p class="project-featured__tagline">{flagship.tagline_es}</p>
+        <p class="project-featured__desc">{flagship.description_es}</p>
+        <div class="project-featured__tags">
+          <span>CRM</span><span>Facturación DIAN</span><span>Nómina</span><span>Inventario</span><span>COP nativo</span><span>+57 first</span>
+        </div>
+        <a
+          href="https://wa.me/573126126085?text=Hola%20Nicol%C3%A1s%2C%20me%20interesa%20Opita%20OS.%20%C2%BFMe%20cuentas%20m%C3%A1s%3F"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="project-featured__cta"
+        >
+          Quiero saber más
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </article>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       T8 Seriedad — By the numbers + Pentest + Compliance
+       (después de Flagship, antes de Manifiesto — credibilidad concreta)
+       ═══════════════════════════════════════════ -->
+  <section id="seriedad" class="section section--light border-b" aria-label="Seriedad">
+    <div class="container">
+      <h2 class="section-eyebrow">Por los números</h2>
+      <p class="section-title">{seriedad.seriedad.title_es}</p>
+      <p class="section-subtitle">{seriedad.seriedad.subtitle_es}</p>
+
+      <ol class="metrics-grid" aria-label="Métricas operativas de Opita Code">
+        {seriedad.metrics.map((m) => (
+          <li class="metric-item reveal">
+            <div class="metric-value">{m.value}</div>
+            <div class="metric-label">{m.label_es}</div>
+            {m.sublabel_es && <div class="metric-sublabel">{m.sublabel_es}</div>}
+          </li>
+        ))}
+      </ol>
+
+      <div class="seriedad-items">
+        {seriedad.seriedad.items.map((it) => (
+          <article class="seriedad-item reveal">
+            <div class="seriedad-item__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" set:html={it.icon === 'shield' ? '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>' : it.icon === 'code' ? '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>' : '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>'} />
+            </div>
+            <h3 class="seriedad-item__title">{it.title_es}</h3>
+            <p class="seriedad-item__body">{it.body_es}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       Manifesto (T7 — principios del operador)
+       ═══════════════════════════════════════════ -->
+  <section id="manifiesto" class="section border-b" aria-label="Manifiesto">
+    <div class="container">
+      <h2 class="section-eyebrow">{manifesto.title_es}</h2>
+      <p class="section-title">{manifesto.subtitle_es}</p>
+
+      <ol class="manifesto-list">
+        {manifesto.principles.map((p) => (
+          <li class="manifesto-item reveal">
+            <span class="manifesto-number">{p.number}</span>
+            <div>
+              <h3 class="manifesto-title">{p.title_es}</h3>
+              <p class="manifesto-body">{p.body_es}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       Ecosystem (todos los productos con carátulas)
+       ═══════════════════════════════════════════ -->
+  <section id="ecosystem" class="section section--light border-b" aria-label="Ecosistema de productos">
+    <div class="container">
+      <h2 class="section-eyebrow">Ecosistema</h2>
+      <p class="section-title">9 productos. 5 en vivo. 4 en construcción.</p>
+      <p class="section-subtitle">Cada uno con un propósito claro. No hacemos suites — hacemos herramientas que sabes cuándo abrir y para qué.</p>
+
+      <div class="products-grid">
+        {otherProducts.map((p) => <ProductCard product={p} lang={lang} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       Process (legacy 3-step)
+       ═══════════════════════════════════════════ -->
+  <section id="proceso" class="section border-b" aria-label="Proceso">
+    <div class="container">
+      <h2 class="section-eyebrow">Proceso</h2>
+      <p class="section-title">Tres pasos. De la idea al producto funcionando.</p>
+
+      <div class="process-steps">
+        <article class="process-step reveal">
+          <div class="process-step__number">01</div>
+          <h3 class="process-step__title">Escuchamos</h3>
+          <p class="process-step__desc">Nos sentamos contigo a entender tu negocio, tus objetivos y el problema real que necesitas resolver. Sin jerga técnica, sin suposiciones.</p>
+        </article>
+        <article class="process-step reveal">
+          <div class="process-step__number">02</div>
+          <h3 class="process-step__title">Construimos</h3>
+          <p class="process-step__desc">Diseñamos, desarrollamos y entregamos en ciclos cortos con hitos claros. OpenSpec como contrato — siempre sabes en qué punto estamos y qué sigue.</p>
+        </article>
+        <article class="process-step reveal">
+          <div class="process-step__number">03</div>
+          <h3 class="process-step__title">Entregamos</h3>
+          <p class="process-step__desc">Sistema funcionando, documentado y listo para escalar. Con soporte continuo y sin misterios — porque el software es una herramienta, no un adorno.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       Founder (legacy founder section)
+       ═══════════════════════════════════════════ -->
+  <section id="fundador" class="section section--dark" aria-label="Fundador">
+    <div class="container">
+      <div class="founder-card reveal">
+        <div class="founder-photo">
+          <img src="/founder.jpg" alt="Juan Nicolás Urrutia Salcedo — Fundador de Opita Code" />
+        </div>
+        <div class="founder-info">
+          <h2 class="founder-name">Juan Nicolás Urrutia Salcedo</h2>
+          <p class="founder-role">Fundador &amp; Desarrollador Principal</p>
+          <p class="founder-bio">
+            Colombiano, desarrollador de software y creador de Opita Code.
+            Construyo tecnología práctica para negocios reales, hago streams
+            en vivo sobre desarrollo y comparto lo que aprendo en el camino.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       Contact
+       ═══════════════════════════════════════════ -->
+  <section id="contact" class="section border-b" aria-label="Contacto">
+    <div class="container" style="max-width: 720px; text-align: center;">
+      <h2 class="section-eyebrow">Trabajemos juntos</h2>
+      <p class="section-title">¿Tienes un proyecto en mente?</p>
+      <p class="section-subtitle" style="margin-left: auto; margin-right: auto;">
+        Escríbenos y conversemos. Respondemos una persona real en menos de 24 horas.
+      </p>
+      <div style="margin-top: 32px;">
+        <ContactForm client:load lang="es" />
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* ── Hero (legacy pattern) ── */
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: clamp(64px, 12vh, 140px) 0 clamp(48px, 8vh, 80px);
+  }
+  .hero-symbol {
+    width: clamp(64px, 8vw, 88px);
+    height: auto;
+    margin-bottom: clamp(20px, 3vh, 32px);
+  }
+  .hero-tagline {
+    font-size: clamp(2rem, 6vw, 3.75rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    max-width: 16ch;
+    font-family: var(--font-heading);
+    margin: 0 auto;
+  }
+  .hero-word {
+    display: inline-block;
+  }
+  .hero-subtitle {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    color: var(--text-muted);
+    max-width: 36em;
+    margin-top: 20px;
+    line-height: 1.6;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 16px;
+    border: 1px solid var(--border-base);
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+  .hero-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-top: 32px;
+  }
+  .hero-cta-desc {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin: 4px 0 4px;
+  }
+
+  /* ── Services (legacy 4-col) ── */
+  .services-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 48px;
+  }
+  @media (min-width: 768px) { .services-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .services-grid { grid-template-columns: repeat(4, 1fr); } }
+
+  .service-card {
+    background: var(--bg-muted);
+    border: 1px solid var(--border-base);
+    border-radius: 16px;
+    padding: 32px;
+    transition: background var(--motion-standard) var(--ease-standard);
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+  }
+  .service-card:hover { background: var(--bg-base); border-color: var(--color-ink); }
+  .service-card__icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 16px;
+    color: var(--color-accent);
+  }
+  .service-card__title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .service-card__desc {
+    font-size: 0.9rem;
+    color: var(--text-base);
+    line-height: 1.6;
+  }
+
+  /* ── Manifesto list (number+title+body) ── */
+  .manifesto-list {
+    list-style: none;
+    margin: 64px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 24px;
+    max-width: 920px;
+  }
+  @media (min-width: 768px) { .manifesto-list { grid-template-columns: repeat(2, 1fr); } }
+  .manifesto-item {
+    display: flex;
+    gap: 20px;
+    padding: 24px;
+    border-left: 2px solid var(--color-accent);
+    background: var(--bg-muted);
+    border-radius: 0 12px 12px 0;
+  }
+  .manifesto-number {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--color-accent);
+    line-height: 1;
+    font-family: var(--font-heading);
+    flex-shrink: 0;
+  }
+  .manifesto-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    font-family: var(--font-heading);
+  }
+  .manifesto-body {
+    font-size: 0.92rem;
+    color: var(--text-base);
+    line-height: 1.65;
+  }
+
+  /* ── T8 Seriedad: by the numbers + 3 credibility items ── */
+  .metrics-grid {
+    list-style: none;
+    margin: 56px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: var(--border-base);
+    border: 1px solid var(--border-base);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  @media (min-width: 640px) { .metrics-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .metrics-grid { grid-template-columns: repeat(3, 1fr); } }
+  .metric-item {
+    background: var(--bg-base);
+    padding: 32px 24px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .metric-value {
+    /* canonical defined in global.css */
+  }
+  .metric-label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-base);
+    margin-top: 4px;
+  }
+  .metric-sublabel {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+    max-width: 28ch;
+    margin: 0 auto;
+  }
+
+  .seriedad-items {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin: 56px 0 0;
+  }
+  @media (min-width: 900px) { .seriedad-items { grid-template-columns: repeat(3, 1fr); } }
+  .seriedad-item {
+    background: var(--bg-muted);
+    border: 1px solid var(--border-base);
+    border-radius: 12px;
+    padding: 32px;
+  }
+  .seriedad-item__icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 16px;
+    color: var(--color-accent);
+  }
+  .seriedad-item__title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .seriedad-item__body {
+    font-size: 0.9rem;
+    color: var(--text-base);
+    line-height: 1.6;
+  }
+
+  /* ── Process steps (legacy 3-col) ── */
+  .process-steps {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-top: 48px;
+  }
+  @media (min-width: 768px) { .process-steps { grid-template-columns: repeat(3, 1fr); } }
+  .process-step {
+    background: var(--bg-muted);
+    border: 1px solid var(--border-base);
+    border-radius: 16px;
+    padding: 32px;
+  }
+  .process-step__number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--color-accent);
+    line-height: 1;
+    margin-bottom: 12px;
+    font-family: var(--font-heading);
+  }
+  .process-step__title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    font-family: var(--font-heading);
+  }
+  .process-step__desc {
+    font-size: 0.9rem;
+    color: var(--text-base);
+    line-height: 1.6;
+  }
+
+  /* ── Founder (legacy) ── */
+  .founder-card {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  @media (max-width: 599px) {
+    .founder-card { flex-direction: column; text-align: center; }
+  }
+  .founder-photo {
+    flex-shrink: 0;
+    width: clamp(140px, 20vw, 200px);
+    height: clamp(140px, 20vw, 200px);
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--color-graphite);
+  }
+  .founder-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .founder-name {
+    font-size: clamp(1.3rem, 3vw, 1.75rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+  .founder-role {
+    font-size: 0.9rem;
+    color: var(--color-accent);
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+  .founder-bio {
+    font-size: 1rem;
+    color: var(--color-line);
+    line-height: 1.7;
+  }
+
+  /* ── Products grid ── */
+  .products-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-top: 48px;
+  }
+  @media (min-width: 640px) { .products-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .products-grid { grid-template-columns: repeat(3, 1fr); } }
+</style>
+
+<script>
+  // Scroll reveals (legacy, gated by reduced-motion)
+  (function () {
+    'use strict';
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const els = document.querySelectorAll('.reveal');
+    if (!els.length) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('reveal--visible');
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.15 }
+    );
+    els.forEach((el) => observer.observe(el));
+  })();
+</script>

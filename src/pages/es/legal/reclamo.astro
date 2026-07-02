@@ -1,0 +1,140 @@
+---
+import LegalLayout from '../../../layouts/LegalLayout.astro';
+---
+
+<LegalLayout
+  title="Libro de Reclamaciones · Opita Code"
+  description="Libro virtual de reclamaciones conforme al artículo 12 de la Ley 1480/2011 (Estatuto del Consumidor)."
+  lastUpdated="1 de julio de 2026"
+  lang="es"
+  section="reclamo"
+>
+  <Fragment slot="title">Libro de Reclamaciones</Fragment>
+
+  <p>
+    Conforme al <strong>artículo 12 de la Ley 1480 de 2011</strong> (Estatuto del
+    Consumidor) y la <strong>Circular Externa 02 de 2015</strong> de la Superintendencia
+    de Industria y Comercio, Opita Code SAS pone a disposición de los consumidores
+    este Libro de Reclamaciones virtual.
+  </p>
+  <p>
+    Todo consumidor tiene derecho a presentar quejas o reclamos sobre los productos
+    o servicios contratados. Opita Code responderá cada reclamación en un plazo
+    máximo de <strong>quince (15) días hábiles</strong>.
+  </p>
+
+  <h2>¿Cómo presentar una reclamación?</h2>
+  <p>Complete el siguiente formulario. Le enviaremos una confirmación con el número de radicado a su correo electrónico.</p>
+
+  <form class="reclamo-form" onsubmit="event.preventDefault(); alert('Esta es una versión estática. En producción, el formulario enviará a /api/reclamo. Por ahora, escríbenos a Owner@opitacode.com');">
+    <div class="reclamo-field">
+      <label for="r-nombre">Nombre completo *</label>
+      <input type="text" id="r-nombre" name="nombre" required minlength="2" />
+    </div>
+    <div class="reclamo-field">
+      <label for="r-email">Correo electrónico *</label>
+      <input type="email" id="r-email" name="email" required />
+    </div>
+    <div class="reclamo-field">
+      <label for="r-telefono">Teléfono de contacto</label>
+      <input type="tel" id="r-telefono" name="telefono" placeholder="+57 3XX XXX XXXX" />
+    </div>
+    <div class="reclamo-field">
+      <label for="r-tipo">Tipo de solicitud *</label>
+      <select id="r-tipo" name="tipo" required>
+        <option value="">— Seleccione —</option>
+        <option value="queja">Queja (insatisfacción con el servicio recibido)</option>
+        <option value="reclamo">Reclamo (solicitud de solución o compensación)</option>
+        <option value="sugerencia">Sugerencia</option>
+        <option value="felicitacion">Felicitación</option>
+      </select>
+    </div>
+    <div class="reclamo-field">
+      <label for="r-producto">Producto o servicio relacionado</label>
+      <input type="text" id="r-producto" name="producto" placeholder="Ej: Vibe Studio, Trabajos, Sociedad Opita" />
+    </div>
+    <div class="reclamo-field">
+      <label for="r-fecha">Fecha del incidente (si aplica)</label>
+      <input type="date" id="r-fecha" name="fecha" />
+    </div>
+    <div class="reclamo-field reclamo-field--full">
+      <label for="r-descripcion">Descripción de la solicitud *</label>
+      <textarea id="r-descripcion" name="descripcion" rows="6" required minlength="20" placeholder="Describa con el mayor detalle posible qué ocurrió, qué producto o servicio está involucrado, y qué solución espera."></textarea>
+    </div>
+    <div class="reclamo-field reclamo-field--full">
+      <label class="reclamo-checkbox">
+        <input type="checkbox" name="autorizacion" required />
+        Autorizo a Opita Code a tratar los datos personales suministrados en este formulario para la gestión de mi solicitud, conforme a la <a href="/es/legal/ptd">Política de Tratamiento de Datos</a>. *
+      </label>
+    </div>
+    <div class="reclamo-field reclamo-field--full">
+      <button type="submit" class="reclamo-submit">Enviar solicitud</button>
+    </div>
+  </form>
+
+  <h2>¿Qué pasa después?</h2>
+  <ol>
+    <li><strong>Confirmación</strong>: Recibirá un correo con el número de radicado y la fecha de recepción.</li>
+    <li><strong>Análisis</strong>: El equipo de Opita Code investigará su caso. Podremos contactarlo para pedir información adicional.</li>
+    <li><strong>Respuesta</strong>: Le responderemos por escrito en máximo <strong>15 días hábiles</strong> contados a partir de la recepción, con una solución o el detalle de por qué no procede.</li>
+    <li><strong>Insatisfacción</strong>: Si la respuesta no resuelve su solicitud, puede elevar queja ante la <a href="https://www.sic.gov.co" rel="noopener" target="_blank">Superintendencia de Industria y Comercio</a> o usar los mecanismos alternativos de solución de conflictos disponibles (SIC, centros de arbitraje, etc.).</li>
+  </ol>
+
+  <h2>Información de contacto</h2>
+  <ul>
+    <li><strong>Razón social</strong>: Opita Code SAS</li>
+    <li><strong>NIT</strong>: 1007465784-7</li>
+    <li><strong>Dirección</strong>: Neiva, Huila, Colombia</li>
+    <li><strong>Correo</strong>: <a href="mailto:Owner@opitacode.com">Owner@opitacode.com</a></li>
+    <li><strong>Teléfono</strong>: +57 312 612 6085</li>
+  </ul>
+
+  <h2>Hoja de control interno</h2>
+  <p>Este libro es administrado por Opita Code SAS y conservado conforme a la normatividad vigente. La hoja de control (registro cronológico de quejas) está disponible para la SIC cuando lo requiera.</p>
+</LegalLayout>
+
+<style>
+  .reclamo-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin: 32px 0;
+    padding: 24px;
+    background: var(--bg-muted);
+    border: 1px solid var(--border-base);
+    border-radius: 12px;
+  }
+  @media (min-width: 720px) { .reclamo-form { grid-template-columns: 1fr 1fr; gap: 20px; } }
+  .reclamo-field { display: flex; flex-direction: column; gap: 6px; }
+  .reclamo-field--full { grid-column: 1 / -1; }
+  .reclamo-field label { font-size: 0.85rem; font-weight: 600; color: var(--text-base); }
+  .reclamo-field input, .reclamo-field select, .reclamo-field textarea {
+    padding: 10px 14px;
+    border: 1px solid var(--border-base);
+    border-radius: 8px;
+    background: var(--bg-base);
+    color: var(--text-base);
+    font-family: inherit;
+    font-size: 0.92rem;
+  }
+  .reclamo-field input:focus, .reclamo-field select:focus, .reclamo-field textarea:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-accent) 20%, transparent);
+  }
+  .reclamo-checkbox { display: flex; gap: 10px; align-items: flex-start; font-weight: 400; font-size: 0.88rem; color: var(--text-muted); }
+  .reclamo-checkbox input { margin-top: 4px; flex-shrink: 0; }
+  .reclamo-submit {
+    padding: 12px 24px;
+    background: var(--color-accent);
+    color: var(--color-inverse-ink);
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background var(--motion-quick) var(--ease-standard);
+  }
+  .reclamo-submit:hover { background: var(--color-accent-hover); }
+</style>
